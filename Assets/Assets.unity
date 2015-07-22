@@ -6939,6 +6939,7 @@ GameObject:
   - 50: {fileID: 1234257532}
   - 61: {fileID: 1234257531}
   - 82: {fileID: 1234257536}
+  - 114: {fileID: 1234257530}
   m_Layer: 8
   m_Name: Character
   m_TagString: Untagged
@@ -6960,6 +6961,26 @@ Transform:
   - {fileID: 45081505}
   m_Father: {fileID: 0}
   m_RootOrder: 1
+--- !u!114 &1234257530
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1234257528}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 338dd3dc2a935f4438d459f1d1d87594, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _LogEvents: 0
+  _forceResolveViewModel: 0
+  _InjectView: 0
+  _overrideViewModel: 0
+  _resolveName: 
+  _Save: 0
+  _BindMovementState: 1
+  _BindJumpState: 1
+  _BindIsNotOnTheGround: 1
 --- !u!61 &1234257531
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -8366,7 +8387,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1614999473
 Transform:
   m_ObjectHideFlags: 0

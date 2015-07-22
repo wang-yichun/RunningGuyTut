@@ -20,4 +20,14 @@ public partial class CharacterViewModel {
     {
         return MovementIntention == MovementIntention.Stop;
     }
+
+    public override bool ComputeIsNotOnTheGround()
+    {
+        return !IsOnTheGround;
+    }
+
+    public override bool ComputeShouldJump()
+    {
+        return IsOnTheGround && JumpIntention == JumpIntention.Jump;
+    }
 }
