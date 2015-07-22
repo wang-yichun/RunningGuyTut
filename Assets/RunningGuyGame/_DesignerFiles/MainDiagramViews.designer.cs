@@ -47,10 +47,23 @@ public class CharacterAvatarViewViewBase : CharacterViewBase {
     
     private IDisposable _MovementIntentionDisposable;
     
+    private IDisposable _JumpIntentionDisposable;
+    
+    private IDisposable _IsOnTheGroundDisposable;
+    
     [UFToggleGroup("MovementState")]
     [UnityEngine.HideInInspector()]
     [UFRequireInstanceMethod("MovementStateChanged")]
     public bool _BindMovementState = true;
+    
+    [UFToggleGroup("JumpState")]
+    [UnityEngine.HideInInspector()]
+    [UFRequireInstanceMethod("JumpStateChanged")]
+    public bool _BindJumpState = true;
+    
+    [UFToggleGroup("IsNotOnTheGround")]
+    [UnityEngine.HideInInspector()]
+    public bool _BindIsNotOnTheGround = true;
     
     public override ViewModel CreateModel() {
         return this.RequestViewModel(GameManager.Container.Resolve<CharacterController>());
@@ -78,6 +91,32 @@ public class CharacterAvatarViewViewBase : CharacterViewBase {
     public virtual void OnMoveRight() {
     }
     
+    /// Subscribes to the state machine property and executes a method for each state.
+    public virtual void JumpStateChanged(Invert.StateMachine.State value) {
+        if (value is NoJump) {
+            this.OnNoJump();
+        }
+        if (value is DoJump) {
+            this.OnDoJump();
+        }
+        if (value is InTheAir) {
+            this.OnInTheAir();
+        }
+    }
+    
+    public virtual void OnNoJump() {
+    }
+    
+    public virtual void OnDoJump() {
+    }
+    
+    public virtual void OnInTheAir() {
+    }
+    
+    /// Subscribes to the property and is notified anytime the value changes.
+    public virtual void IsNotOnTheGroundChanged(Boolean value) {
+    }
+    
     public virtual void ResetMovementIntention() {
         if (_MovementIntentionDisposable != null) _MovementIntentionDisposable.Dispose();
         _MovementIntentionDisposable = GetMovementIntentionObservable().Subscribe(Character._MovementIntentionProperty).DisposeWith(this);
@@ -91,11 +130,45 @@ public class CharacterAvatarViewViewBase : CharacterViewBase {
         return this.UpdateAsObservable().Select(p => CalculateMovementIntention());
     }
     
+    public virtual void ResetJumpIntention() {
+        if (_JumpIntentionDisposable != null) _JumpIntentionDisposable.Dispose();
+        _JumpIntentionDisposable = GetJumpIntentionObservable().Subscribe(Character._JumpIntentionProperty).DisposeWith(this);
+    }
+    
+    protected virtual JumpIntention CalculateJumpIntention() {
+        return default(JumpIntention);
+    }
+    
+    protected virtual UniRx.IObservable<JumpIntention> GetJumpIntentionObservable() {
+        return this.UpdateAsObservable().Select(p => CalculateJumpIntention());
+    }
+    
+    public virtual void ResetIsOnTheGround() {
+        if (_IsOnTheGroundDisposable != null) _IsOnTheGroundDisposable.Dispose();
+        _IsOnTheGroundDisposable = GetIsOnTheGroundObservable().Subscribe(Character._IsOnTheGroundProperty).DisposeWith(this);
+    }
+    
+    protected virtual Boolean CalculateIsOnTheGround() {
+        return default(Boolean);
+    }
+    
+    protected virtual UniRx.IObservable<Boolean> GetIsOnTheGroundObservable() {
+        return this.UpdateAsObservable().Select(p => CalculateIsOnTheGround());
+    }
+    
     public override void Bind() {
         base.Bind();
         ResetMovementIntention();
+        ResetJumpIntention();
+        ResetIsOnTheGround();
         if (this._BindMovementState) {
             this.BindProperty(Character._MovementStateProperty, this.MovementStateChanged);
+        }
+        if (this._BindJumpState) {
+            this.BindProperty(Character._JumpStateProperty, this.JumpStateChanged);
+        }
+        if (this._BindIsNotOnTheGround) {
+            this.BindProperty(Character._IsNotOnTheGroundProperty, this.IsNotOnTheGroundChanged);
         }
     }
 }

@@ -116,6 +116,105 @@ public class CharacterMovementStateMachineBase : Invert.StateMachine.StateMachin
     }
 }
 
+public class CharacterJumpStateMachineBase : Invert.StateMachine.StateMachine {
+    
+    private StateMachineTrigger _JumpExpected;
+    
+    private StateMachineTrigger _LeftGround;
+    
+    private StateMachineTrigger _Landed;
+    
+    private NoJump _NoJump;
+    
+    private DoJump _DoJump;
+    
+    private InTheAir _InTheAir;
+    
+    public CharacterJumpStateMachineBase(ViewModel vm, string propertyName) : 
+            base(vm, propertyName) {
+    }
+    
+    public virtual StateMachineTrigger JumpExpected {
+        get {
+            if ((this._JumpExpected == null)) {
+                this._JumpExpected = new StateMachineTrigger(this, "JumpExpected");
+            }
+            return this._JumpExpected;
+        }
+    }
+    
+    public virtual StateMachineTrigger LeftGround {
+        get {
+            if ((this._LeftGround == null)) {
+                this._LeftGround = new StateMachineTrigger(this, "LeftGround");
+            }
+            return this._LeftGround;
+        }
+    }
+    
+    public virtual StateMachineTrigger Landed {
+        get {
+            if ((this._Landed == null)) {
+                this._Landed = new StateMachineTrigger(this, "Landed");
+            }
+            return this._Landed;
+        }
+    }
+    
+    public override Invert.StateMachine.State StartState {
+        get {
+            return this.NoJump;
+        }
+    }
+    
+    public virtual NoJump NoJump {
+        get {
+            if ((this._NoJump == null)) {
+                this._NoJump = new NoJump();
+            }
+            return this._NoJump;
+        }
+    }
+    
+    public virtual DoJump DoJump {
+        get {
+            if ((this._DoJump == null)) {
+                this._DoJump = new DoJump();
+            }
+            return this._DoJump;
+        }
+    }
+    
+    public virtual InTheAir InTheAir {
+        get {
+            if ((this._InTheAir == null)) {
+                this._InTheAir = new InTheAir();
+            }
+            return this._InTheAir;
+        }
+    }
+    
+    public override void Compose(List<State> states) {
+        base.Compose(states);
+        this.NoJump.StateMachine = this;
+        NoJump.JumpExpected = new StateTransition("JumpExpected", NoJump,DoJump);
+        NoJump.LeftGround = new StateTransition("LeftGround", NoJump,InTheAir);
+        NoJump.AddTrigger(JumpExpected, NoJump.JumpExpected);
+        NoJump.AddTrigger(LeftGround, NoJump.LeftGround);
+        states.Add(NoJump);
+        this.DoJump.StateMachine = this;
+        DoJump.LeftGround = new StateTransition("LeftGround", DoJump,InTheAir);
+        DoJump.AddTrigger(LeftGround, DoJump.LeftGround);
+        states.Add(DoJump);
+        this.InTheAir.StateMachine = this;
+        InTheAir.Landed = new StateTransition("Landed", InTheAir,NoJump);
+        InTheAir.JumpExpected = new StateTransition("JumpExpected", InTheAir,DoJump);
+        InTheAir.AddTrigger(Landed, InTheAir.Landed);
+        InTheAir.AddTrigger(JumpExpected, InTheAir.JumpExpected);
+        states.Add(InTheAir);
+    }
+}
+
 public class Idle : Invert.StateMachine.State {
     
     private StateTransition _GoLeft;
@@ -230,5 +329,107 @@ public class MoveRight : Invert.StateMachine.State {
     
     private void StopTransition() {
         this.Transition(this.Stop);
+    }
+}
+
+public class NoJump : Invert.StateMachine.State {
+    
+    private StateTransition _JumpExpected;
+    
+    private StateTransition _LeftGround;
+    
+    public virtual StateTransition JumpExpected {
+        get {
+            return this._JumpExpected;
+        }
+        set {
+            _JumpExpected = value;
+        }
+    }
+    
+    public virtual StateTransition LeftGround {
+        get {
+            return this._LeftGround;
+        }
+        set {
+            _LeftGround = value;
+        }
+    }
+    
+    public override string Name {
+        get {
+            return "NoJump";
+        }
+    }
+    
+    private void JumpExpectedTransition() {
+        this.Transition(this.JumpExpected);
+    }
+    
+    private void LeftGroundTransition() {
+        this.Transition(this.LeftGround);
+    }
+}
+
+public class DoJump : Invert.StateMachine.State {
+    
+    private StateTransition _LeftGround;
+    
+    public virtual StateTransition LeftGround {
+        get {
+            return this._LeftGround;
+        }
+        set {
+            _LeftGround = value;
+        }
+    }
+    
+    public override string Name {
+        get {
+            return "DoJump";
+        }
+    }
+    
+    private void LeftGroundTransition() {
+        this.Transition(this.LeftGround);
+    }
+}
+
+public class InTheAir : Invert.StateMachine.State {
+    
+    private StateTransition _Landed;
+    
+    private StateTransition _JumpExpected;
+    
+    public virtual StateTransition Landed {
+        get {
+            return this._Landed;
+        }
+        set {
+            _Landed = value;
+        }
+    }
+    
+    public virtual StateTransition JumpExpected {
+        get {
+            return this._JumpExpected;
+        }
+        set {
+            _JumpExpected = value;
+        }
+    }
+    
+    public override string Name {
+        get {
+            return "InTheAir";
+        }
+    }
+    
+    private void LandedTransition() {
+        this.Transition(this.Landed);
+    }
+    
+    private void JumpExpectedTransition() {
+        this.Transition(this.JumpExpected);
     }
 }

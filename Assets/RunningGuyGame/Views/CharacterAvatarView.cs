@@ -6,7 +6,30 @@ using UnityEngine;
 using UniRx;
 
 
-public partial class CharacterAvatarView {
+public partial class CharacterAvatarView { 
+
+    /// Subscribes to the state machine property and executes a method for each state.
+    public override void JumpStateChanged(Invert.StateMachine.State value) {
+        base.JumpStateChanged(value);
+    }
+    
+    public override void OnNoJump() {
+        base.OnNoJump();
+    }
+    
+    public override void OnDoJump() {
+        base.OnDoJump();
+    }
+    
+    public override void OnInTheAir() {
+        base.OnInTheAir();
+    }
+
+    /// Subscribes to the property and is notified anytime the value changes.
+    public override void IsNotOnTheGroundChanged(Boolean value) {
+        base.IsNotOnTheGroundChanged(value);
+    }
+
 
     Vector3 speed = new Vector3(3, 0, 0);
     protected Animator animator;

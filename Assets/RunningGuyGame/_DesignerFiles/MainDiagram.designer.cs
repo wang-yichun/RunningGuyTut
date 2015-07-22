@@ -14,15 +14,29 @@ public class CharacterViewModelBase : ViewModel {
     
     private IDisposable _ShouldStopDisposable;
     
+    private IDisposable _ShouldJumpDisposable;
+    
+    private IDisposable _IsNotOnTheGroundDisposable;
+    
     public P<MovementIntention> _MovementIntentionProperty;
     
     public CharacterMovementStateMachine _MovementStateProperty;
+    
+    public P<JumpIntention> _JumpIntentionProperty;
+    
+    public CharacterJumpStateMachine _JumpStateProperty;
+    
+    public P<Boolean> _IsOnTheGroundProperty;
     
     public P<Boolean> _ShouldMoveLeftProperty;
     
     public P<Boolean> _ShouldMoveRightProperty;
     
     public P<Boolean> _ShouldStopProperty;
+    
+    public P<Boolean> _ShouldJumpProperty;
+    
+    public P<Boolean> _IsNotOnTheGroundProperty;
     
     public CharacterViewModelBase(CharacterControllerBase controller, bool initialize = true) : 
             base(controller, initialize) {
@@ -36,15 +50,25 @@ public class CharacterViewModelBase : ViewModel {
         base.Bind();
         _MovementIntentionProperty = new P<MovementIntention>(this, "MovementIntention");
         _MovementStateProperty = new CharacterMovementStateMachine(this, "MovementState");
+        _JumpIntentionProperty = new P<JumpIntention>(this, "JumpIntention");
+        _JumpStateProperty = new CharacterJumpStateMachine(this, "JumpState");
+        _IsOnTheGroundProperty = new P<Boolean>(this, "IsOnTheGround");
         _ShouldMoveLeftProperty = new P<Boolean>(this, "ShouldMoveLeft");
         _ShouldMoveRightProperty = new P<Boolean>(this, "ShouldMoveRight");
         _ShouldStopProperty = new P<Boolean>(this, "ShouldStop");
+        _ShouldJumpProperty = new P<Boolean>(this, "ShouldJump");
+        _IsNotOnTheGroundProperty = new P<Boolean>(this, "IsNotOnTheGround");
         this.ResetShouldMoveLeft();
         this.ResetShouldMoveRight();
         this.ResetShouldStop();
+        this.ResetShouldJump();
+        this.ResetIsNotOnTheGround();
         this._MovementStateProperty.GoLeft.AddComputer(_ShouldMoveLeftProperty);
         this._MovementStateProperty.GoRight.AddComputer(_ShouldMoveRightProperty);
         this._MovementStateProperty.Stop.AddComputer(_ShouldStopProperty);
+        this._JumpStateProperty.JumpExpected.AddComputer(_ShouldJumpProperty);
+        this._JumpStateProperty.LeftGround.AddComputer(_IsNotOnTheGroundProperty);
+        this._IsOnTheGroundProperty.Subscribe(_JumpStateProperty.Landed);
     }
     
     public virtual void ResetShouldMoveLeft() {
@@ -60,6 +84,16 @@ public class CharacterViewModelBase : ViewModel {
     public virtual void ResetShouldStop() {
         if (_ShouldStopDisposable != null) _ShouldStopDisposable.Dispose();
         _ShouldStopDisposable = _ShouldStopProperty.ToComputed( ComputeShouldStop, this.GetShouldStopDependents().ToArray() ).DisposeWith(this);
+    }
+    
+    public virtual void ResetShouldJump() {
+        if (_ShouldJumpDisposable != null) _ShouldJumpDisposable.Dispose();
+        _ShouldJumpDisposable = _ShouldJumpProperty.ToComputed( ComputeShouldJump, this.GetShouldJumpDependents().ToArray() ).DisposeWith(this);
+    }
+    
+    public virtual void ResetIsNotOnTheGround() {
+        if (_IsNotOnTheGroundDisposable != null) _IsNotOnTheGroundDisposable.Dispose();
+        _IsNotOnTheGroundDisposable = _IsNotOnTheGroundProperty.ToComputed( ComputeIsNotOnTheGround, this.GetIsNotOnTheGroundDependents().ToArray() ).DisposeWith(this);
     }
     
     public virtual Boolean ComputeShouldMoveLeft() {
@@ -86,6 +120,24 @@ public class CharacterViewModelBase : ViewModel {
     
     public virtual IEnumerable<IObservableProperty> GetShouldStopDependents() {
         yield return _MovementIntentionProperty;
+        yield break;
+    }
+    
+    public virtual Boolean ComputeShouldJump() {
+        return default(Boolean);
+    }
+    
+    public virtual IEnumerable<IObservableProperty> GetShouldJumpDependents() {
+        yield return _JumpIntentionProperty;
+        yield break;
+    }
+    
+    public virtual Boolean ComputeIsNotOnTheGround() {
+        return default(Boolean);
+    }
+    
+    public virtual IEnumerable<IObservableProperty> GetIsNotOnTheGroundDependents() {
+        yield return _IsOnTheGroundProperty;
         yield break;
     }
 }
@@ -127,6 +179,51 @@ public partial class CharacterViewModel : CharacterViewModelBase {
         }
         set {
             _MovementStateProperty.Value = value;
+        }
+    }
+    
+    public virtual P<JumpIntention> JumpIntentionProperty {
+        get {
+            return this._JumpIntentionProperty;
+        }
+    }
+    
+    public virtual JumpIntention JumpIntention {
+        get {
+            return _JumpIntentionProperty.Value;
+        }
+        set {
+            _JumpIntentionProperty.Value = value;
+        }
+    }
+    
+    public virtual CharacterJumpStateMachine JumpStateProperty {
+        get {
+            return this._JumpStateProperty;
+        }
+    }
+    
+    public virtual Invert.StateMachine.State JumpState {
+        get {
+            return _JumpStateProperty.Value;
+        }
+        set {
+            _JumpStateProperty.Value = value;
+        }
+    }
+    
+    public virtual P<Boolean> IsOnTheGroundProperty {
+        get {
+            return this._IsOnTheGroundProperty;
+        }
+    }
+    
+    public virtual Boolean IsOnTheGround {
+        get {
+            return _IsOnTheGroundProperty.Value;
+        }
+        set {
+            _IsOnTheGroundProperty.Value = value;
         }
     }
     
@@ -175,6 +272,36 @@ public partial class CharacterViewModel : CharacterViewModelBase {
         }
     }
     
+    public virtual P<Boolean> ShouldJumpProperty {
+        get {
+            return this._ShouldJumpProperty;
+        }
+    }
+    
+    public virtual Boolean ShouldJump {
+        get {
+            return _ShouldJumpProperty.Value;
+        }
+        set {
+            _ShouldJumpProperty.Value = value;
+        }
+    }
+    
+    public virtual P<Boolean> IsNotOnTheGroundProperty {
+        get {
+            return this._IsNotOnTheGroundProperty;
+        }
+    }
+    
+    public virtual Boolean IsNotOnTheGround {
+        get {
+            return _IsNotOnTheGroundProperty.Value;
+        }
+        set {
+            _IsNotOnTheGroundProperty.Value = value;
+        }
+    }
+    
     protected override void WireCommands(Controller controller) {
         var character = controller as CharacterControllerBase;
     }
@@ -183,12 +310,18 @@ public partial class CharacterViewModel : CharacterViewModelBase {
 		base.Write(stream);
 		stream.SerializeInt("MovementIntention", (int)this.MovementIntention);
         stream.SerializeString("MovementState", this.MovementState.Name);;
+		stream.SerializeInt("JumpIntention", (int)this.JumpIntention);
+        stream.SerializeString("JumpState", this.JumpState.Name);;
+        stream.SerializeBool("IsOnTheGround", this.IsOnTheGround);
     }
     
     public override void Read(ISerializerStream stream) {
 		base.Read(stream);
 		this.MovementIntention = (MovementIntention)stream.DeserializeInt("MovementIntention");
         this._MovementStateProperty.SetState(stream.DeserializeString("MovementState"));
+		this.JumpIntention = (JumpIntention)stream.DeserializeInt("JumpIntention");
+        this._JumpStateProperty.SetState(stream.DeserializeString("JumpState"));
+        		this.IsOnTheGround = stream.DeserializeBool("IsOnTheGround");;
     }
     
     public override void Unbind() {
@@ -199,9 +332,14 @@ public partial class CharacterViewModel : CharacterViewModelBase {
         base.FillProperties(list);;
         list.Add(new ViewModelPropertyInfo(_MovementIntentionProperty, false, false, true));
         list.Add(new ViewModelPropertyInfo(_MovementStateProperty, false, false, false));
+        list.Add(new ViewModelPropertyInfo(_JumpIntentionProperty, false, false, true));
+        list.Add(new ViewModelPropertyInfo(_JumpStateProperty, false, false, false));
+        list.Add(new ViewModelPropertyInfo(_IsOnTheGroundProperty, false, false, false));
         list.Add(new ViewModelPropertyInfo(_ShouldMoveLeftProperty, false, false, false, true));
         list.Add(new ViewModelPropertyInfo(_ShouldMoveRightProperty, false, false, false, true));
         list.Add(new ViewModelPropertyInfo(_ShouldStopProperty, false, false, false, true));
+        list.Add(new ViewModelPropertyInfo(_ShouldJumpProperty, false, false, false, true));
+        list.Add(new ViewModelPropertyInfo(_IsNotOnTheGroundProperty, false, false, false, true));
     }
     
     protected override void FillCommands(List<ViewModelCommandInfo> list) {
@@ -216,4 +354,11 @@ public enum MovementIntention {
     Right,
     
     Stop,
+}
+
+public enum JumpIntention {
+    
+    Jump,
+    
+    Idle,
 }
