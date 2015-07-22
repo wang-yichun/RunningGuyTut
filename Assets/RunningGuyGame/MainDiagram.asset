@@ -9,9 +9,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: -1440375443, guid: 8909b3110239b804886e7150f2263a2a, type: 3}
-  m_Name: NewElementsGraph
+  m_Name: MainDiagram
   m_EditorClassIdentifier: 
-  _jsonData: '{"Name":"NewElementsGraph", "Version":"1.51", "Identifier":"a9770dd6-9ffb-44f9-8d33-dd1323bb2fc1",
+  _jsonData: '{"Name":"MainDiagram", "Version":"1.51", "Identifier":"a9770dd6-9ffb-44f9-8d33-dd1323bb2fc1",
     "FilterState":{"_CLRType":"FilterState", "FilterStack":[  ]}, "Settings":{"_CLRType":"ElementDiagramSettings",
     "SnapSize":"10", "Snap":"true", "CodePathStrategyName":"Default", "GridLinesColor":{"r":"0.271",
     "g":"0.271", "b":"0.271", "a":"1"}, "GridLinesColorSecondary":{"r":"0.169", "g":"0.169",
@@ -20,6 +20,14 @@ MonoBehaviour:
     "g":"1", "b":"0", "a":"1"}, "SceneManagerLinkColor":{"r":"0.5", "g":"0.5", "b":"0.5",
     "a":"1"}, "SubSystemLinkColor":{"r":"0.5", "g":"0.5", "b":"0.5", "a":"1"}, "TransitionLinkColor":{"r":"1",
     "g":"0.9215686", "b":"0.01568628", "a":"1"}, "ViewLinkColor":{"r":"0", "g":"0",
-    "b":"1", "a":"1"}, "RootNamespace":""}, "PositionData":{"_CLRType":"FilterPositionData"},
-    "SceneFlow":{"_CLRType":"SceneFlowFilter", "Identifier":"1fcbf16f-bd16-424b-a4da-0c11bf91453f",
-    "Locations":{}, "CollapsedValues":{}}, "Nodes":[  ]}'
+    "b":"1", "a":"1"}, "RootNamespace":""}, "PositionData":{"_CLRType":"FilterPositionData",
+    "1fcbf16f-bd16-424b-a4da-0c11bf91453f":{"b187bb3b-a684-49a4-8179-58cbcfeae939":{"x":"315",
+    "y":"246"}, "22cc3cc4-fb5d-4944-b14d-903a08688f58":{"x":"49", "y":"201"}}}, "SceneFlow":{"_CLRType":"SceneFlowFilter",
+    "Identifier":"1fcbf16f-bd16-424b-a4da-0c11bf91453f", "Locations":{}, "CollapsedValues":{"b187bb3b-a684-49a4-8179-58cbcfeae939":"true",
+    "22cc3cc4-fb5d-4944-b14d-903a08688f58":"true"}}, "Nodes":[ {"_CLRType":"SceneManagerData",
+    "Name":"LevelSceneManager", "IsCollapsed":"true", "Identifier":"b187bb3b-a684-49a4-8179-58cbcfeae939",
+    "Items":[  ], "CollapsedValues":{}, "Flags":{"_CLRType":"true"}, "DataBag":{"_CLRType":"DataBag"},
+    "SubSystemIdentifier":"22cc3cc4-fb5d-4944-b14d-903a08688f58"}, {"_CLRType":"SubSystemData",
+    "Name":"LevelSystem", "IsCollapsed":"true", "Identifier":"22cc3cc4-fb5d-4944-b14d-903a08688f58",
+    "Items":[  ], "CollapsedValues":{}, "Flags":{"_CLRType":"true"}, "DataBag":{"_CLRType":"DataBag"},
+    "Imports":[  ]} ]}'
