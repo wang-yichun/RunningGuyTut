@@ -26,7 +26,22 @@ public sealed partial class LevelSceneManagerSettings {
 // </summary>
 public class LevelSceneManagerBase : SceneManager {
     
+    private CharacterController _CharacterController;
+    
     public LevelSceneManagerSettings _LevelSceneManagerSettings = new LevelSceneManagerSettings();
+    
+    [Inject()]
+    public virtual CharacterController CharacterController {
+        get {
+            if ((this._CharacterController == null)) {
+                this._CharacterController = new CharacterController() { Container = Container };
+            }
+            return this._CharacterController;
+        }
+        set {
+            _CharacterController = value;
+        }
+    }
     
     // <summary>
     // This method is the first method to be invoked when the scene first loads. Anything registered here with 'Container' will effectively 
@@ -35,6 +50,7 @@ public class LevelSceneManagerBase : SceneManager {
     // </summary>
     public override void Setup() {
         base.Setup();
+        Container.RegisterController<CharacterController>(CharacterController);
         this.Container.InjectAll();
     }
     
