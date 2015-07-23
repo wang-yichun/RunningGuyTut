@@ -28,6 +28,10 @@ public class CharacterViewModelBase : ViewModel {
     
     public P<Boolean> _IsOnTheGroundProperty;
     
+    public P<Boolean> _JumpLockedProperty;
+    
+    public P<Int32> _JumpsPerformedProperty;
+    
     public P<Boolean> _ShouldMoveLeftProperty;
     
     public P<Boolean> _ShouldMoveRightProperty;
@@ -53,6 +57,8 @@ public class CharacterViewModelBase : ViewModel {
         _JumpIntentionProperty = new P<JumpIntention>(this, "JumpIntention");
         _JumpStateProperty = new CharacterJumpStateMachine(this, "JumpState");
         _IsOnTheGroundProperty = new P<Boolean>(this, "IsOnTheGround");
+        _JumpLockedProperty = new P<Boolean>(this, "JumpLocked");
+        _JumpsPerformedProperty = new P<Int32>(this, "JumpsPerformed");
         _ShouldMoveLeftProperty = new P<Boolean>(this, "ShouldMoveLeft");
         _ShouldMoveRightProperty = new P<Boolean>(this, "ShouldMoveRight");
         _ShouldStopProperty = new P<Boolean>(this, "ShouldStop");
@@ -227,6 +233,36 @@ public partial class CharacterViewModel : CharacterViewModelBase {
         }
     }
     
+    public virtual P<Boolean> JumpLockedProperty {
+        get {
+            return this._JumpLockedProperty;
+        }
+    }
+    
+    public virtual Boolean JumpLocked {
+        get {
+            return _JumpLockedProperty.Value;
+        }
+        set {
+            _JumpLockedProperty.Value = value;
+        }
+    }
+    
+    public virtual P<Int32> JumpsPerformedProperty {
+        get {
+            return this._JumpsPerformedProperty;
+        }
+    }
+    
+    public virtual Int32 JumpsPerformed {
+        get {
+            return _JumpsPerformedProperty.Value;
+        }
+        set {
+            _JumpsPerformedProperty.Value = value;
+        }
+    }
+    
     public virtual P<Boolean> ShouldMoveLeftProperty {
         get {
             return this._ShouldMoveLeftProperty;
@@ -313,6 +349,8 @@ public partial class CharacterViewModel : CharacterViewModelBase {
 		stream.SerializeInt("JumpIntention", (int)this.JumpIntention);
         stream.SerializeString("JumpState", this.JumpState.Name);;
         stream.SerializeBool("IsOnTheGround", this.IsOnTheGround);
+        stream.SerializeBool("JumpLocked", this.JumpLocked);
+        stream.SerializeInt("JumpsPerformed", this.JumpsPerformed);
     }
     
     public override void Read(ISerializerStream stream) {
@@ -322,6 +360,8 @@ public partial class CharacterViewModel : CharacterViewModelBase {
 		this.JumpIntention = (JumpIntention)stream.DeserializeInt("JumpIntention");
         this._JumpStateProperty.SetState(stream.DeserializeString("JumpState"));
         		this.IsOnTheGround = stream.DeserializeBool("IsOnTheGround");;
+        		this.JumpLocked = stream.DeserializeBool("JumpLocked");;
+        		this.JumpsPerformed = stream.DeserializeInt("JumpsPerformed");;
     }
     
     public override void Unbind() {
@@ -335,6 +375,8 @@ public partial class CharacterViewModel : CharacterViewModelBase {
         list.Add(new ViewModelPropertyInfo(_JumpIntentionProperty, false, false, true));
         list.Add(new ViewModelPropertyInfo(_JumpStateProperty, false, false, false));
         list.Add(new ViewModelPropertyInfo(_IsOnTheGroundProperty, false, false, false));
+        list.Add(new ViewModelPropertyInfo(_JumpLockedProperty, false, false, false));
+        list.Add(new ViewModelPropertyInfo(_JumpsPerformedProperty, false, false, false));
         list.Add(new ViewModelPropertyInfo(_ShouldMoveLeftProperty, false, false, false, true));
         list.Add(new ViewModelPropertyInfo(_ShouldMoveRightProperty, false, false, false, true));
         list.Add(new ViewModelPropertyInfo(_ShouldStopProperty, false, false, false, true));

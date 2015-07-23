@@ -19,6 +19,14 @@ using UniRx;
 [DiagramInfoAttribute("RunningGuyGame")]
 public abstract class CharacterViewBase : ViewBase {
     
+    [UFGroup("View Model Properties")]
+    [UnityEngine.HideInInspector()]
+    public Boolean _JumpLocked;
+    
+    [UFGroup("View Model Properties")]
+    [UnityEngine.HideInInspector()]
+    public Int32 _JumpsPerformed;
+    
     public override System.Type ViewModelType {
         get {
             return typeof(CharacterViewModel);
@@ -40,6 +48,8 @@ public abstract class CharacterViewBase : ViewBase {
     
     protected override void InitializeViewModel(ViewModel viewModel) {
         CharacterViewModel character = ((CharacterViewModel)(viewModel));
+        character.JumpLocked = this._JumpLocked;
+        character.JumpsPerformed = this._JumpsPerformed;
     }
 }
 
