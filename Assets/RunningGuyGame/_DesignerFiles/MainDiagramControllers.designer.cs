@@ -38,6 +38,9 @@ public abstract class CharacterControllerBase : Controller {
     
     public virtual void Hit(CharacterViewModel character) {
     }
+    
+    public virtual void FinishReached(CharacterViewModel character) {
+    }
 }
 
 public abstract class CoinControllerBase : Controller {
@@ -77,5 +80,11 @@ public abstract class LevelRootControllerBase : Controller {
     
     public override void Initialize(ViewModel viewModel) {
         this.InitializeLevelRoot(((LevelRootViewModel)(viewModel)));
+    }
+    
+    public virtual void LoseGame(LevelRootViewModel levelRoot) {
+    }
+    
+    public virtual void WinGame(LevelRootViewModel levelRoot) {
     }
 }

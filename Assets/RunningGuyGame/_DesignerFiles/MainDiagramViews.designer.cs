@@ -79,6 +79,10 @@ public abstract class CharacterViewBase : ViewBase {
     public virtual void ExecuteHit() {
         this.ExecuteCommand(Character.Hit);
     }
+    
+    public virtual void ExecuteFinishReached() {
+        this.ExecuteCommand(Character.FinishReached);
+    }
 }
 
 [DiagramInfoAttribute("RunningGuyGame")]
@@ -140,6 +144,14 @@ public abstract class LevelRootViewBase : ViewBase {
     protected override void InitializeViewModel(ViewModel viewModel) {
         LevelRootViewModel levelRoot = ((LevelRootViewModel)(viewModel));
         levelRoot.Player = this._Player == null ? null : this._Player.ViewModelObject as CharacterViewModel;
+    }
+    
+    public virtual void ExecuteLoseGame() {
+        this.ExecuteCommand(LevelRoot.LoseGame);
+    }
+    
+    public virtual void ExecuteWinGame() {
+        this.ExecuteCommand(LevelRoot.WinGame);
     }
 }
 
@@ -318,6 +330,11 @@ public class LevelRootViewViewBase : LevelRootViewBase {
     [UnityEngine.HideInInspector()]
     public bool _BindScore = true;
     
+    [UFToggleGroup("GameFlowState")]
+    [UnityEngine.HideInInspector()]
+    [UFRequireInstanceMethod("GameFlowStateChanged")]
+    public bool _BindGameFlowState = true;
+    
     public override ViewModel CreateModel() {
         return this.RequestViewModel(GameManager.Container.Resolve<LevelRootController>());
     }
@@ -339,6 +356,28 @@ public class LevelRootViewViewBase : LevelRootViewBase {
     public virtual void ScoreChanged(Int32 value) {
     }
     
+    /// Subscribes to the state machine property and executes a method for each state.
+    public virtual void GameFlowStateChanged(Invert.StateMachine.State value) {
+        if (value is Running) {
+            this.OnRunning();
+        }
+        if (value is Lost) {
+            this.OnLost();
+        }
+        if (value is Won) {
+            this.OnWon();
+        }
+    }
+    
+    public virtual void OnRunning() {
+    }
+    
+    public virtual void OnLost() {
+    }
+    
+    public virtual void OnWon() {
+    }
+    
     public override void Bind() {
         base.Bind();
         if (this._BindCoins) {
@@ -346,6 +385,9 @@ public class LevelRootViewViewBase : LevelRootViewBase {
         }
         if (this._BindScore) {
             this.BindProperty(LevelRoot._ScoreProperty, this.ScoreChanged);
+        }
+        if (this._BindGameFlowState) {
+            this.BindProperty(LevelRoot._GameFlowStateProperty, this.GameFlowStateChanged);
         }
     }
 }

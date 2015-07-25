@@ -7,7 +7,25 @@ using UniRx;
 
 
 public partial class LevelRootView
-{
+{ 
+
+    /// Subscribes to the state machine property and executes a method for each state.
+    public override void GameFlowStateChanged(Invert.StateMachine.State value) {
+        base.GameFlowStateChanged(value);
+    }
+    
+    public override void OnRunning() {
+        base.OnRunning();
+    }
+    
+    public override void OnLost() {
+        base.OnLost();
+    }
+    
+    public override void OnWon() {
+        base.OnWon();
+    }
+
 
     public TextMesh scoreText;
 

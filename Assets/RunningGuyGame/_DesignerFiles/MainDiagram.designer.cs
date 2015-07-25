@@ -54,6 +54,8 @@ public class CharacterViewModelBase : ViewModel {
     
     protected CommandWithSender<CharacterViewModel> _Hit;
     
+    protected CommandWithSender<CharacterViewModel> _FinishReached;
+    
     public CharacterViewModelBase(CharacterControllerBase controller, bool initialize = true) : 
             base(controller, initialize) {
     }
@@ -434,6 +436,15 @@ public partial class CharacterViewModel : CharacterViewModelBase {
         }
     }
     
+    public virtual CommandWithSender<CharacterViewModel> FinishReached {
+        get {
+            return _FinishReached;
+        }
+        set {
+            _FinishReached = value;
+        }
+    }
+    
     public virtual LevelRootViewModel ParentLevelRoot {
         get {
             return this._ParentLevelRoot;
@@ -447,6 +458,7 @@ public partial class CharacterViewModel : CharacterViewModelBase {
         var character = controller as CharacterControllerBase;
         this.PickUpCoin = new CommandWithSender<CharacterViewModel>(this, character.PickUpCoin);
         this.Hit = new CommandWithSender<CharacterViewModel>(this, character.Hit);
+        this.FinishReached = new CommandWithSender<CharacterViewModel>(this, character.FinishReached);
     }
     
     public override void Write(ISerializerStream stream) {
@@ -507,6 +519,7 @@ public partial class CharacterViewModel : CharacterViewModelBase {
         base.FillCommands(list);;
         list.Add(new ViewModelCommandInfo("PickUpCoin", PickUpCoin) { ParameterType = typeof(void) });
         list.Add(new ViewModelCommandInfo("Hit", Hit) { ParameterType = typeof(void) });
+        list.Add(new ViewModelCommandInfo("FinishReached", FinishReached) { ParameterType = typeof(void) });
     }
 }
 
@@ -592,9 +605,15 @@ public class LevelRootViewModelBase : ViewModel {
     
     public P<CharacterViewModel> _PlayerProperty;
     
+    public GameFlowStateMachine _GameFlowStateProperty;
+    
     public P<Int32> _ScoreProperty;
     
     public ModelCollection<CoinViewModel> _CoinsProperty;
+    
+    protected CommandWithSender<LevelRootViewModel> _LoseGame;
+    
+    protected CommandWithSender<LevelRootViewModel> _WinGame;
     
     public LevelRootViewModelBase(LevelRootControllerBase controller, bool initialize = true) : 
             base(controller, initialize) {
@@ -607,10 +626,13 @@ public class LevelRootViewModelBase : ViewModel {
     public override void Bind() {
         base.Bind();
         _PlayerProperty = new P<CharacterViewModel>(this, "Player");
+        _GameFlowStateProperty = new GameFlowStateMachine(this, "GameFlowState");
         _ScoreProperty = new P<Int32>(this, "Score");
         _CoinsProperty = new ModelCollection<CoinViewModel>(this, "Coins");
         _CoinsProperty.CollectionChanged += CoinsCollectionChanged;
         this.ResetScore();
+        this._LoseGame.Subscribe(_GameFlowStateProperty.Lose);
+        this._WinGame.Subscribe(_GameFlowStateProperty.Win);
         this.BindProperty(_PlayerProperty, p=> ResetScore());
     }
     
@@ -660,6 +682,21 @@ public partial class LevelRootViewModel : LevelRootViewModelBase {
         }
     }
     
+    public virtual GameFlowStateMachine GameFlowStateProperty {
+        get {
+            return this._GameFlowStateProperty;
+        }
+    }
+    
+    public virtual Invert.StateMachine.State GameFlowState {
+        get {
+            return _GameFlowStateProperty.Value;
+        }
+        set {
+            _GameFlowStateProperty.Value = value;
+        }
+    }
+    
     public virtual P<Int32> ScoreProperty {
         get {
             return this._ScoreProperty;
@@ -681,19 +718,41 @@ public partial class LevelRootViewModel : LevelRootViewModelBase {
         }
     }
     
+    public virtual CommandWithSender<LevelRootViewModel> LoseGame {
+        get {
+            return _LoseGame;
+        }
+        set {
+            _LoseGame = value;
+        }
+    }
+    
+    public virtual CommandWithSender<LevelRootViewModel> WinGame {
+        get {
+            return _WinGame;
+        }
+        set {
+            _WinGame = value;
+        }
+    }
+    
     protected override void WireCommands(Controller controller) {
         var levelRoot = controller as LevelRootControllerBase;
+        this.LoseGame = new CommandWithSender<LevelRootViewModel>(this, levelRoot.LoseGame);
+        this.WinGame = new CommandWithSender<LevelRootViewModel>(this, levelRoot.WinGame);
     }
     
     public override void Write(ISerializerStream stream) {
 		base.Write(stream);
 		if (stream.DeepSerialize) stream.SerializeObject("Player", this.Player);
+        stream.SerializeString("GameFlowState", this.GameFlowState.Name);;
         if (stream.DeepSerialize) stream.SerializeArray("Coins", this.Coins);
     }
     
     public override void Read(ISerializerStream stream) {
 		base.Read(stream);
 		if (stream.DeepSerialize) this.Player = stream.DeserializeObject<CharacterViewModel>("Player");
+        this._GameFlowStateProperty.SetState(stream.DeserializeString("GameFlowState"));
 if (stream.DeepSerialize) {
         this.Coins.Clear();
         this.Coins.AddRange(stream.DeserializeObjectArray<CoinViewModel>("Coins"));
@@ -708,12 +767,15 @@ if (stream.DeepSerialize) {
     protected override void FillProperties(List<ViewModelPropertyInfo> list) {
         base.FillProperties(list);;
         list.Add(new ViewModelPropertyInfo(_PlayerProperty, true, false, false));
+        list.Add(new ViewModelPropertyInfo(_GameFlowStateProperty, false, false, false));
         list.Add(new ViewModelPropertyInfo(_ScoreProperty, false, false, false, true));
         list.Add(new ViewModelPropertyInfo(_CoinsProperty, true, true, false));
     }
     
     protected override void FillCommands(List<ViewModelCommandInfo> list) {
         base.FillCommands(list);;
+        list.Add(new ViewModelCommandInfo("LoseGame", LoseGame) { ParameterType = typeof(void) });
+        list.Add(new ViewModelCommandInfo("WinGame", WinGame) { ParameterType = typeof(void) });
     }
     
     protected override void CoinsCollectionChanged(System.Collections.Specialized.NotifyCollectionChangedEventArgs args) {

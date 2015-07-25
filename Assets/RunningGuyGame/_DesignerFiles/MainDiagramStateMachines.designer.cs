@@ -215,6 +215,88 @@ public class CharacterJumpStateMachineBase : Invert.StateMachine.StateMachine {
     }
 }
 
+public class GameFlowStateMachineBase : Invert.StateMachine.StateMachine {
+    
+    private StateMachineTrigger _Lose;
+    
+    private StateMachineTrigger _Win;
+    
+    private Running _Running;
+    
+    private Lost _Lost;
+    
+    private Won _Won;
+    
+    public GameFlowStateMachineBase(ViewModel vm, string propertyName) : 
+            base(vm, propertyName) {
+    }
+    
+    public virtual StateMachineTrigger Lose {
+        get {
+            if ((this._Lose == null)) {
+                this._Lose = new StateMachineTrigger(this, "Lose");
+            }
+            return this._Lose;
+        }
+    }
+    
+    public virtual StateMachineTrigger Win {
+        get {
+            if ((this._Win == null)) {
+                this._Win = new StateMachineTrigger(this, "Win");
+            }
+            return this._Win;
+        }
+    }
+    
+    public override Invert.StateMachine.State StartState {
+        get {
+            return this.Running;
+        }
+    }
+    
+    public virtual Running Running {
+        get {
+            if ((this._Running == null)) {
+                this._Running = new Running();
+            }
+            return this._Running;
+        }
+    }
+    
+    public virtual Lost Lost {
+        get {
+            if ((this._Lost == null)) {
+                this._Lost = new Lost();
+            }
+            return this._Lost;
+        }
+    }
+    
+    public virtual Won Won {
+        get {
+            if ((this._Won == null)) {
+                this._Won = new Won();
+            }
+            return this._Won;
+        }
+    }
+    
+    public override void Compose(List<State> states) {
+        base.Compose(states);
+        this.Running.StateMachine = this;
+        Running.Lose = new StateTransition("Lose", Running,Lost);
+        Running.Win = new StateTransition("Win", Running,Won);
+        Running.AddTrigger(Lose, Running.Lose);
+        Running.AddTrigger(Win, Running.Win);
+        states.Add(Running);
+        this.Lost.StateMachine = this;
+        states.Add(Lost);
+        this.Won.StateMachine = this;
+        states.Add(Won);
+    }
+}
+
 public class Idle : Invert.StateMachine.State {
     
     private StateTransition _GoLeft;
@@ -431,5 +513,62 @@ public class InTheAir : Invert.StateMachine.State {
     
     private void JumpExpectedTransition() {
         this.Transition(this.JumpExpected);
+    }
+}
+
+public class Running : Invert.StateMachine.State {
+    
+    private StateTransition _Lose;
+    
+    private StateTransition _Win;
+    
+    public virtual StateTransition Lose {
+        get {
+            return this._Lose;
+        }
+        set {
+            _Lose = value;
+        }
+    }
+    
+    public virtual StateTransition Win {
+        get {
+            return this._Win;
+        }
+        set {
+            _Win = value;
+        }
+    }
+    
+    public override string Name {
+        get {
+            return "Running";
+        }
+    }
+    
+    private void LoseTransition() {
+        this.Transition(this.Lose);
+    }
+    
+    private void WinTransition() {
+        this.Transition(this.Win);
+    }
+}
+
+public class Lost : Invert.StateMachine.State {
+    
+    public override string Name {
+        get {
+            return "Lost";
+        }
+    }
+}
+
+public class Won : Invert.StateMachine.State {
+    
+    public override string Name {
+        get {
+            return "Won";
+        }
     }
 }
