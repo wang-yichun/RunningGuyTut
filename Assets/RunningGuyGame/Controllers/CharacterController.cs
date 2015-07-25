@@ -32,5 +32,9 @@ public class CharacterController : CharacterControllerBase {
 
         }
     }
-
+    public override void PickUpCoin(CharacterViewModel character)
+    {
+        base.PickUpCoin(character);
+        character.CoinsCollected++;
+    }
 }

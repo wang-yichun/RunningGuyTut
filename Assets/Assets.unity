@@ -1039,6 +1039,7 @@ GameObject:
   - 212: {fileID: 247390735}
   - 95: {fileID: 247390734}
   - 61: {fileID: 247390737}
+  - 114: {fileID: 247390738}
   m_Layer: 0
   m_Name: Coin
   m_TagString: Untagged
@@ -1109,6 +1110,24 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_Size: {x: .400000006, y: .430000007}
   m_Center: {x: 0, y: 0}
+--- !u!114 &247390738
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 11497356, guid: 3f976a64987c26a48917746903413479,
+    type: 2}
+  m_PrefabInternal: {fileID: 821169365}
+  m_GameObject: {fileID: 247390733}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 828b3a7207d47764d876dcc8a9479ef2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _LogEvents: 0
+  _forceResolveViewModel: 0
+  _InjectView: 0
+  _overrideViewModel: 0
+  _resolveName: 
+  _Save: 0
 --- !u!1 &249446065
 GameObject:
   m_ObjectHideFlags: 0
@@ -1171,6 +1190,7 @@ GameObject:
   - 212: {fileID: 263039052}
   - 95: {fileID: 263039051}
   - 61: {fileID: 263039050}
+  - 114: {fileID: 263039049}
   m_Layer: 0
   m_Name: Coin
   m_TagString: Untagged
@@ -1190,6 +1210,24 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1214630576}
   m_RootOrder: 10
+--- !u!114 &263039049
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 11497356, guid: 3f976a64987c26a48917746903413479,
+    type: 2}
+  m_PrefabInternal: {fileID: 1287118320}
+  m_GameObject: {fileID: 263039047}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 828b3a7207d47764d876dcc8a9479ef2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _LogEvents: 0
+  _forceResolveViewModel: 0
+  _InjectView: 0
+  _overrideViewModel: 0
+  _resolveName: 
+  _Save: 0
 --- !u!61 &263039050
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -2629,13 +2667,14 @@ Prefab:
 GameObject:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 100000, guid: 3f976a64987c26a48917746903413479, type: 2}
-  m_PrefabInternal: {fileID: 1978929572}
+  m_PrefabInternal: {fileID: 1676733076}
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 539834953}
   - 212: {fileID: 539834952}
   - 95: {fileID: 539834951}
   - 61: {fileID: 539834954}
+  - 114: {fileID: 539834955}
   m_Layer: 0
   m_Name: Coin
   m_TagString: Untagged
@@ -2649,7 +2688,7 @@ Animator:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 9500000, guid: 3f976a64987c26a48917746903413479,
     type: 2}
-  m_PrefabInternal: {fileID: 1978929572}
+  m_PrefabInternal: {fileID: 1676733076}
   m_GameObject: {fileID: 539834950}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
@@ -2664,7 +2703,7 @@ SpriteRenderer:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 21200000, guid: 3f976a64987c26a48917746903413479,
     type: 2}
-  m_PrefabInternal: {fileID: 1978929572}
+  m_PrefabInternal: {fileID: 1676733076}
   m_GameObject: {fileID: 539834950}
   m_Enabled: 1
   m_CastShadows: 0
@@ -2686,7 +2725,7 @@ SpriteRenderer:
 Transform:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 400000, guid: 3f976a64987c26a48917746903413479, type: 2}
-  m_PrefabInternal: {fileID: 1978929572}
+  m_PrefabInternal: {fileID: 1676733076}
   m_GameObject: {fileID: 539834950}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: .832300007, y: -1.00419998, z: 0}
@@ -2699,13 +2738,31 @@ BoxCollider2D:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 6100000, guid: 3f976a64987c26a48917746903413479,
     type: 2}
-  m_PrefabInternal: {fileID: 1978929572}
+  m_PrefabInternal: {fileID: 1676733076}
   m_GameObject: {fileID: 539834950}
   m_Enabled: 1
   m_Material: {fileID: 0}
   m_IsTrigger: 1
   m_Size: {x: .400000006, y: .430000007}
   m_Center: {x: 0, y: 0}
+--- !u!114 &539834955
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 11497356, guid: 3f976a64987c26a48917746903413479,
+    type: 2}
+  m_PrefabInternal: {fileID: 1676733076}
+  m_GameObject: {fileID: 539834950}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 828b3a7207d47764d876dcc8a9479ef2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _LogEvents: 0
+  _forceResolveViewModel: 0
+  _InjectView: 0
+  _overrideViewModel: 0
+  _resolveName: 
+  _Save: 0
 --- !u!1 &551421375
 GameObject:
   m_ObjectHideFlags: 0
@@ -3142,6 +3199,7 @@ GameObject:
   - 212: {fileID: 672954157}
   - 95: {fileID: 672954156}
   - 61: {fileID: 672954155}
+  - 114: {fileID: 672954154}
   m_Layer: 0
   m_Name: Coin
   m_TagString: Untagged
@@ -3161,6 +3219,24 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1214630576}
   m_RootOrder: 7
+--- !u!114 &672954154
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 11497356, guid: 3f976a64987c26a48917746903413479,
+    type: 2}
+  m_PrefabInternal: {fileID: 466609525}
+  m_GameObject: {fileID: 672954152}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 828b3a7207d47764d876dcc8a9479ef2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _LogEvents: 0
+  _forceResolveViewModel: 0
+  _InjectView: 0
+  _overrideViewModel: 0
+  _resolveName: 
+  _Save: 0
 --- !u!61 &672954155
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -4019,6 +4095,7 @@ GameObject:
   - 212: {fileID: 815117728}
   - 95: {fileID: 815117727}
   - 61: {fileID: 815117726}
+  - 114: {fileID: 815117725}
   m_Layer: 0
   m_Name: Coin
   m_TagString: Untagged
@@ -4038,6 +4115,24 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1214630576}
   m_RootOrder: 11
+--- !u!114 &815117725
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 11497356, guid: 3f976a64987c26a48917746903413479,
+    type: 2}
+  m_PrefabInternal: {fileID: 593834265}
+  m_GameObject: {fileID: 815117723}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 828b3a7207d47764d876dcc8a9479ef2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _LogEvents: 0
+  _forceResolveViewModel: 0
+  _InjectView: 0
+  _overrideViewModel: 0
+  _resolveName: 
+  _Save: 0
 --- !u!61 &815117726
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -4978,6 +5073,7 @@ GameObject:
   - 212: {fileID: 941859354}
   - 95: {fileID: 941859353}
   - 61: {fileID: 941859356}
+  - 114: {fileID: 941859357}
   m_Layer: 0
   m_Name: Coin
   m_TagString: Untagged
@@ -5048,6 +5144,24 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_Size: {x: .400000006, y: .430000007}
   m_Center: {x: 0, y: 0}
+--- !u!114 &941859357
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 11497356, guid: 3f976a64987c26a48917746903413479,
+    type: 2}
+  m_PrefabInternal: {fileID: 1992712375}
+  m_GameObject: {fileID: 941859352}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 828b3a7207d47764d876dcc8a9479ef2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _LogEvents: 0
+  _forceResolveViewModel: 0
+  _InjectView: 0
+  _overrideViewModel: 0
+  _resolveName: 
+  _Save: 0
 --- !u!1 &948722716
 GameObject:
   m_ObjectHideFlags: 0
@@ -5059,6 +5173,7 @@ GameObject:
   - 212: {fileID: 948722721}
   - 95: {fileID: 948722720}
   - 61: {fileID: 948722719}
+  - 114: {fileID: 948722718}
   m_Layer: 0
   m_Name: Coin
   m_TagString: Untagged
@@ -5078,6 +5193,24 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1214630576}
   m_RootOrder: 6
+--- !u!114 &948722718
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 11497356, guid: 3f976a64987c26a48917746903413479,
+    type: 2}
+  m_PrefabInternal: {fileID: 296280812}
+  m_GameObject: {fileID: 948722716}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 828b3a7207d47764d876dcc8a9479ef2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _LogEvents: 0
+  _forceResolveViewModel: 0
+  _InjectView: 0
+  _overrideViewModel: 0
+  _resolveName: 
+  _Save: 0
 --- !u!61 &948722719
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -5307,6 +5440,7 @@ GameObject:
   - 212: {fileID: 995430380}
   - 95: {fileID: 995430379}
   - 61: {fileID: 995430378}
+  - 114: {fileID: 995430377}
   m_Layer: 0
   m_Name: Coin
   m_TagString: Untagged
@@ -5326,6 +5460,24 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1214630576}
   m_RootOrder: 8
+--- !u!114 &995430377
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 11497356, guid: 3f976a64987c26a48917746903413479,
+    type: 2}
+  m_PrefabInternal: {fileID: 634781931}
+  m_GameObject: {fileID: 995430375}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 828b3a7207d47764d876dcc8a9479ef2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _LogEvents: 0
+  _forceResolveViewModel: 0
+  _InjectView: 0
+  _overrideViewModel: 0
+  _resolveName: 
+  _Save: 0
 --- !u!61 &995430378
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -5535,6 +5687,7 @@ GameObject:
   - 212: {fileID: 1015745985}
   - 95: {fileID: 1015745984}
   - 61: {fileID: 1015745987}
+  - 114: {fileID: 1015745988}
   m_Layer: 0
   m_Name: Coin
   m_TagString: Untagged
@@ -5605,6 +5758,24 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_Size: {x: .400000006, y: .430000007}
   m_Center: {x: 0, y: 0}
+--- !u!114 &1015745988
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 11497356, guid: 3f976a64987c26a48917746903413479,
+    type: 2}
+  m_PrefabInternal: {fileID: 1669522804}
+  m_GameObject: {fileID: 1015745983}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 828b3a7207d47764d876dcc8a9479ef2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _LogEvents: 0
+  _forceResolveViewModel: 0
+  _InjectView: 0
+  _overrideViewModel: 0
+  _resolveName: 
+  _Save: 0
 --- !u!1 &1020213316
 GameObject:
   m_ObjectHideFlags: 0
@@ -6135,6 +6306,7 @@ GameObject:
   - 212: {fileID: 1134030067}
   - 95: {fileID: 1134030066}
   - 61: {fileID: 1134030069}
+  - 114: {fileID: 1134030070}
   m_Layer: 0
   m_Name: Coin
   m_TagString: Untagged
@@ -6205,6 +6377,24 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_Size: {x: .400000006, y: .430000007}
   m_Center: {x: 0, y: 0}
+--- !u!114 &1134030070
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 11497356, guid: 3f976a64987c26a48917746903413479,
+    type: 2}
+  m_PrefabInternal: {fileID: 1143990369}
+  m_GameObject: {fileID: 1134030065}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 828b3a7207d47764d876dcc8a9479ef2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _LogEvents: 0
+  _forceResolveViewModel: 0
+  _InjectView: 0
+  _overrideViewModel: 0
+  _resolveName: 
+  _Save: 0
 --- !u!1 &1143133754
 GameObject:
   m_ObjectHideFlags: 0
@@ -6365,6 +6555,7 @@ GameObject:
   - 124: {fileID: 1147315614}
   - 81: {fileID: 1147315613}
   - 114: {fileID: 1147315618}
+  - 114: {fileID: 1147315619}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -6455,6 +6646,29 @@ MonoBehaviour:
   height: 0
   heightDamping: 300
   rotationDamping: 300
+--- !u!114 &1147315619
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1147315612}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: da1337a4cca39b340ab4d4b5b32b5edd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _LogEvents: 0
+  _forceResolveViewModel: 0
+  _InjectView: 0
+  _overrideViewModel: 1
+  _resolveName: 
+  _Save: 0
+  _Player: {fileID: 1234257530}
+  _BindCoins: 1
+  _CoinsSceneFirst: 1
+  _CoinsContainer: {fileID: 1214630576}
+  _BindScore: 1
+  scoreText: {fileID: 508318961}
 --- !u!1 &1148991346
 GameObject:
   m_ObjectHideFlags: 0
@@ -6466,6 +6680,7 @@ GameObject:
   - 212: {fileID: 1148991351}
   - 95: {fileID: 1148991350}
   - 61: {fileID: 1148991349}
+  - 114: {fileID: 1148991348}
   m_Layer: 0
   m_Name: Coin
   m_TagString: Untagged
@@ -6485,6 +6700,24 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1214630576}
   m_RootOrder: 9
+--- !u!114 &1148991348
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 11497356, guid: 3f976a64987c26a48917746903413479,
+    type: 2}
+  m_PrefabInternal: {fileID: 1370233890}
+  m_GameObject: {fileID: 1148991346}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 828b3a7207d47764d876dcc8a9479ef2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _LogEvents: 0
+  _forceResolveViewModel: 0
+  _InjectView: 0
+  _overrideViewModel: 0
+  _resolveName: 
+  _Save: 0
 --- !u!61 &1148991349
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -7975,6 +8208,7 @@ GameObject:
   - 212: {fileID: 1507359504}
   - 95: {fileID: 1507359503}
   - 61: {fileID: 1507359502}
+  - 114: {fileID: 1507359501}
   m_Layer: 0
   m_Name: Coin
   m_TagString: Untagged
@@ -7994,6 +8228,24 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1214630576}
   m_RootOrder: 12
+--- !u!114 &1507359501
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 11497356, guid: 3f976a64987c26a48917746903413479,
+    type: 2}
+  m_PrefabInternal: {fileID: 471094882}
+  m_GameObject: {fileID: 1507359499}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 828b3a7207d47764d876dcc8a9479ef2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _LogEvents: 0
+  _forceResolveViewModel: 0
+  _InjectView: 0
+  _overrideViewModel: 0
+  _resolveName: 
+  _Save: 0
 --- !u!61 &1507359502
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -8158,6 +8410,7 @@ GameObject:
   - 212: {fileID: 1545710296}
   - 95: {fileID: 1545710295}
   - 61: {fileID: 1545710298}
+  - 114: {fileID: 1545710299}
   m_Layer: 0
   m_Name: Coin
   m_TagString: Untagged
@@ -8228,6 +8481,24 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_Size: {x: .400000006, y: .430000007}
   m_Center: {x: 0, y: 0}
+--- !u!114 &1545710299
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 11497356, guid: 3f976a64987c26a48917746903413479,
+    type: 2}
+  m_PrefabInternal: {fileID: 315021143}
+  m_GameObject: {fileID: 1545710294}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 828b3a7207d47764d876dcc8a9479ef2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _LogEvents: 0
+  _forceResolveViewModel: 0
+  _InjectView: 0
+  _overrideViewModel: 0
+  _resolveName: 
+  _Save: 0
 --- !u!1 &1562567761
 GameObject:
   m_ObjectHideFlags: 0
@@ -8776,6 +9047,50 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 3f976a64987c26a48917746903413479, type: 2}
   m_RootGameObject: {fileID: 1015745983}
+  m_IsPrefabParent: 0
+  m_IsExploded: 1
+--- !u!1001 &1676733076
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 1214630576}
+    m_Modifications:
+    - target: {fileID: 400000, guid: 3f976a64987c26a48917746903413479, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: .832300007
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: 3f976a64987c26a48917746903413479, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: -1.00419998
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: 3f976a64987c26a48917746903413479, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: 3f976a64987c26a48917746903413479, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: 3f976a64987c26a48917746903413479, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: 3f976a64987c26a48917746903413479, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: 3f976a64987c26a48917746903413479, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: 3f976a64987c26a48917746903413479, type: 2}
+      propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 100100000, guid: 3f976a64987c26a48917746903413479, type: 2}
+  m_RootGameObject: {fileID: 539834950}
   m_IsPrefabParent: 0
   m_IsExploded: 1
 --- !u!1 &1691063422
@@ -9962,50 +10277,6 @@ PolygonCollider2D:
       - {x: .511695504, y: -.508116961}
       - {x: -.525530159, y: -.511575401}
       - {x: -.363090634, y: .492324084}
---- !u!1001 &1978929572
-Prefab:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 1214630576}
-    m_Modifications:
-    - target: {fileID: 400000, guid: 3f976a64987c26a48917746903413479, type: 2}
-      propertyPath: m_LocalPosition.x
-      value: .832300007
-      objectReference: {fileID: 0}
-    - target: {fileID: 400000, guid: 3f976a64987c26a48917746903413479, type: 2}
-      propertyPath: m_LocalPosition.y
-      value: -1.00419998
-      objectReference: {fileID: 0}
-    - target: {fileID: 400000, guid: 3f976a64987c26a48917746903413479, type: 2}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 400000, guid: 3f976a64987c26a48917746903413479, type: 2}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 400000, guid: 3f976a64987c26a48917746903413479, type: 2}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 400000, guid: 3f976a64987c26a48917746903413479, type: 2}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 400000, guid: 3f976a64987c26a48917746903413479, type: 2}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 400000, guid: 3f976a64987c26a48917746903413479, type: 2}
-      propertyPath: m_RootOrder
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_ParentPrefab: {fileID: 100100000, guid: 3f976a64987c26a48917746903413479, type: 2}
-  m_RootGameObject: {fileID: 539834950}
-  m_IsPrefabParent: 0
-  m_IsExploded: 1
 --- !u!1 &1983476589
 GameObject:
   m_ObjectHideFlags: 0

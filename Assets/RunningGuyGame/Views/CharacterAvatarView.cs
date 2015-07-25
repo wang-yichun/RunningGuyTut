@@ -23,7 +23,17 @@ public partial class CharacterAvatarView {
         rigidbody2d.velocity = new Vector2(rigidbody2d.velocity.x, 0);
         rigidbody2d.AddForce(transform.up * 8, ForceMode2D.Impulse);
     }
-    
+
+    public override void Bind()
+    {
+        base.Bind();
+        this.BindViewTrigger2DWith<CoinView>(CollisionEventType.Enter, coinview =>
+        {
+            coinview.ExecutePickUp();
+            ExecutePickUpCoin();
+        });
+    }
+
     public override void OnInTheAir() {
         base.OnInTheAir();
     }
