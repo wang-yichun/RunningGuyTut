@@ -153,6 +153,10 @@ public abstract class LevelRootViewBase : ViewBase {
     public virtual void ExecuteWinGame() {
         this.ExecuteCommand(LevelRoot.WinGame);
     }
+    
+    public virtual void ExecuteRestart() {
+        this.ExecuteCommand(LevelRoot.Restart);
+    }
 }
 
 public class CharacterAvatarViewViewBase : CharacterViewBase {

@@ -87,4 +87,7 @@ public abstract class LevelRootControllerBase : Controller {
     
     public virtual void WinGame(LevelRootViewModel levelRoot) {
     }
+    
+    public virtual void Restart(LevelRootViewModel levelRoot) {
+    }
 }

@@ -16,18 +16,27 @@ public partial class LevelRootView
     
     public override void OnRunning() {
         base.OnRunning();
+        gameoverScreen.gameObject.SetActive(false);
     }
     
     public override void OnLost() {
         base.OnLost();
+        gameoverScreen.gameObject.SetActive(true);
+        gameoverScreenText.text = "You're lost!";
+
     }
     
     public override void OnWon() {
         base.OnWon();
+        gameoverScreen.gameObject.SetActive(true);
+        gameoverScreenText.text = "Level Complete!";
     }
 
 
     public TextMesh scoreText;
+    public Transform gameoverScreen;
+    public TextMesh gameoverScreenText;
+    public GameObject playAgainButton;
 
     /// This binding will add or remove views based on an element/viewmodel collection.
     public override ViewBase CreateCoinsView(CoinViewModel item) {
@@ -51,5 +60,21 @@ public partial class LevelRootView
         base.ScoreChanged(value);
         scoreText.text = "Score " + value;
     }
- 
+
+    public override void Bind()
+    {
+        base.Bind();
+
+        UpdateAsObservable()
+            .Where(_ => Input.GetMouseButtonDown(0))
+            .Subscribe(_ =>
+            {
+                Vector3 pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                RaycastHit2D hit = Physics2D.Raycast(pos, playAgainButton.transform.position);
+                if (hit.collider != null && hit.collider.gameObject == playAgainButton)
+                {
+                    ExecuteRestart();
+                }
+            });
+    }
 }

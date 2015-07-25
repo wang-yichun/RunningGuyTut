@@ -615,6 +615,8 @@ public class LevelRootViewModelBase : ViewModel {
     
     protected CommandWithSender<LevelRootViewModel> _WinGame;
     
+    protected CommandWithSender<LevelRootViewModel> _Restart;
+    
     public LevelRootViewModelBase(LevelRootControllerBase controller, bool initialize = true) : 
             base(controller, initialize) {
     }
@@ -736,10 +738,20 @@ public partial class LevelRootViewModel : LevelRootViewModelBase {
         }
     }
     
+    public virtual CommandWithSender<LevelRootViewModel> Restart {
+        get {
+            return _Restart;
+        }
+        set {
+            _Restart = value;
+        }
+    }
+    
     protected override void WireCommands(Controller controller) {
         var levelRoot = controller as LevelRootControllerBase;
         this.LoseGame = new CommandWithSender<LevelRootViewModel>(this, levelRoot.LoseGame);
         this.WinGame = new CommandWithSender<LevelRootViewModel>(this, levelRoot.WinGame);
+        this.Restart = new CommandWithSender<LevelRootViewModel>(this, levelRoot.Restart);
     }
     
     public override void Write(ISerializerStream stream) {
@@ -776,6 +788,7 @@ if (stream.DeepSerialize) {
         base.FillCommands(list);;
         list.Add(new ViewModelCommandInfo("LoseGame", LoseGame) { ParameterType = typeof(void) });
         list.Add(new ViewModelCommandInfo("WinGame", WinGame) { ParameterType = typeof(void) });
+        list.Add(new ViewModelCommandInfo("Restart", Restart) { ParameterType = typeof(void) });
     }
     
     protected override void CoinsCollectionChanged(System.Collections.Specialized.NotifyCollectionChangedEventArgs args) {

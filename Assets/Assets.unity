@@ -6668,6 +6668,7 @@ MonoBehaviour:
   _CoinsSceneFirst: 1
   _CoinsContainer: {fileID: 1214630576}
   _BindScore: 1
+  _BindGameFlowState: 1
   scoreText: {fileID: 508318961}
 --- !u!1 &1148991346
 GameObject:

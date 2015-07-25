@@ -78,6 +78,7 @@ public partial class CharacterAvatarView {
         });
 
         this.BindComponentCollision2DWith<Spikes>(CollisionEventType.Enter, _=> ExecuteHit());
+        this.BindComponentCollision2DWith<WinLocation>(CollisionEventType.Enter, _ => ExecuteFinishReached());
     }
 
     public override void OnInTheAir() {
