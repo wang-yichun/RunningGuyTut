@@ -37,4 +37,23 @@ public class CharacterController : CharacterControllerBase {
         base.PickUpCoin(character);
         character.CoinsCollected++;
     }
+    public override void Hit(CharacterViewModel character)
+    {
+        if (character.IsInvulnarable) return;
+        character.Lives--;
+
+        if (character.Lives <= 0)
+        {
+            character.IsAlive = false;
+        }
+        else
+        {
+            character.IsInvulnarable = true;
+            Observable.Timer(TimeSpan.FromMilliseconds(1500))
+                .Subscribe(l =>
+                {
+                    character.IsInvulnarable = false;
+                });
+        }
+    }
 }

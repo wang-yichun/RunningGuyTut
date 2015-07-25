@@ -35,6 +35,9 @@ public abstract class CharacterControllerBase : Controller {
     
     public virtual void PickUpCoin(CharacterViewModel character) {
     }
+    
+    public virtual void Hit(CharacterViewModel character) {
+    }
 }
 
 public abstract class CoinControllerBase : Controller {

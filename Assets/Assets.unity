@@ -7208,15 +7208,20 @@ MonoBehaviour:
   _LogEvents: 0
   _forceResolveViewModel: 0
   _InjectView: 0
-  _overrideViewModel: 0
+  _overrideViewModel: 1
   _resolveName: 
   _Save: 0
   _JumpLocked: 0
   _JumpsPerformed: 0
   _CoinsCollected: 0
+  _IsAlive: 1
+  _IsInvulnarable: 0
+  _Lives: 3
   _BindMovementState: 1
   _BindJumpState: 1
   _BindIsNotOnTheGround: 1
+  _BindIsAlive: 1
+  _BindIsInvulnarable: 1
 --- !u!61 &1234257531
 BoxCollider2D:
   m_ObjectHideFlags: 0

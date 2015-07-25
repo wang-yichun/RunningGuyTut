@@ -34,6 +34,12 @@ public class CharacterViewModelBase : ViewModel {
     
     public P<Int32> _CoinsCollectedProperty;
     
+    public P<Boolean> _IsAliveProperty;
+    
+    public P<Boolean> _IsInvulnarableProperty;
+    
+    public P<Int32> _LivesProperty;
+    
     public P<Boolean> _ShouldMoveLeftProperty;
     
     public P<Boolean> _ShouldMoveRightProperty;
@@ -45,6 +51,8 @@ public class CharacterViewModelBase : ViewModel {
     public P<Boolean> _IsNotOnTheGroundProperty;
     
     protected CommandWithSender<CharacterViewModel> _PickUpCoin;
+    
+    protected CommandWithSender<CharacterViewModel> _Hit;
     
     public CharacterViewModelBase(CharacterControllerBase controller, bool initialize = true) : 
             base(controller, initialize) {
@@ -64,6 +72,9 @@ public class CharacterViewModelBase : ViewModel {
         _JumpLockedProperty = new P<Boolean>(this, "JumpLocked");
         _JumpsPerformedProperty = new P<Int32>(this, "JumpsPerformed");
         _CoinsCollectedProperty = new P<Int32>(this, "CoinsCollected");
+        _IsAliveProperty = new P<Boolean>(this, "IsAlive");
+        _IsInvulnarableProperty = new P<Boolean>(this, "IsInvulnarable");
+        _LivesProperty = new P<Int32>(this, "Lives");
         _ShouldMoveLeftProperty = new P<Boolean>(this, "ShouldMoveLeft");
         _ShouldMoveRightProperty = new P<Boolean>(this, "ShouldMoveRight");
         _ShouldStopProperty = new P<Boolean>(this, "ShouldStop");
@@ -285,6 +296,51 @@ public partial class CharacterViewModel : CharacterViewModelBase {
         }
     }
     
+    public virtual P<Boolean> IsAliveProperty {
+        get {
+            return this._IsAliveProperty;
+        }
+    }
+    
+    public virtual Boolean IsAlive {
+        get {
+            return _IsAliveProperty.Value;
+        }
+        set {
+            _IsAliveProperty.Value = value;
+        }
+    }
+    
+    public virtual P<Boolean> IsInvulnarableProperty {
+        get {
+            return this._IsInvulnarableProperty;
+        }
+    }
+    
+    public virtual Boolean IsInvulnarable {
+        get {
+            return _IsInvulnarableProperty.Value;
+        }
+        set {
+            _IsInvulnarableProperty.Value = value;
+        }
+    }
+    
+    public virtual P<Int32> LivesProperty {
+        get {
+            return this._LivesProperty;
+        }
+    }
+    
+    public virtual Int32 Lives {
+        get {
+            return _LivesProperty.Value;
+        }
+        set {
+            _LivesProperty.Value = value;
+        }
+    }
+    
     public virtual P<Boolean> ShouldMoveLeftProperty {
         get {
             return this._ShouldMoveLeftProperty;
@@ -369,6 +425,15 @@ public partial class CharacterViewModel : CharacterViewModelBase {
         }
     }
     
+    public virtual CommandWithSender<CharacterViewModel> Hit {
+        get {
+            return _Hit;
+        }
+        set {
+            _Hit = value;
+        }
+    }
+    
     public virtual LevelRootViewModel ParentLevelRoot {
         get {
             return this._ParentLevelRoot;
@@ -381,6 +446,7 @@ public partial class CharacterViewModel : CharacterViewModelBase {
     protected override void WireCommands(Controller controller) {
         var character = controller as CharacterControllerBase;
         this.PickUpCoin = new CommandWithSender<CharacterViewModel>(this, character.PickUpCoin);
+        this.Hit = new CommandWithSender<CharacterViewModel>(this, character.Hit);
     }
     
     public override void Write(ISerializerStream stream) {
@@ -393,6 +459,9 @@ public partial class CharacterViewModel : CharacterViewModelBase {
         stream.SerializeBool("JumpLocked", this.JumpLocked);
         stream.SerializeInt("JumpsPerformed", this.JumpsPerformed);
         stream.SerializeInt("CoinsCollected", this.CoinsCollected);
+        stream.SerializeBool("IsAlive", this.IsAlive);
+        stream.SerializeBool("IsInvulnarable", this.IsInvulnarable);
+        stream.SerializeInt("Lives", this.Lives);
     }
     
     public override void Read(ISerializerStream stream) {
@@ -405,6 +474,9 @@ public partial class CharacterViewModel : CharacterViewModelBase {
         		this.JumpLocked = stream.DeserializeBool("JumpLocked");;
         		this.JumpsPerformed = stream.DeserializeInt("JumpsPerformed");;
         		this.CoinsCollected = stream.DeserializeInt("CoinsCollected");;
+        		this.IsAlive = stream.DeserializeBool("IsAlive");;
+        		this.IsInvulnarable = stream.DeserializeBool("IsInvulnarable");;
+        		this.Lives = stream.DeserializeInt("Lives");;
     }
     
     public override void Unbind() {
@@ -421,6 +493,9 @@ public partial class CharacterViewModel : CharacterViewModelBase {
         list.Add(new ViewModelPropertyInfo(_JumpLockedProperty, false, false, false));
         list.Add(new ViewModelPropertyInfo(_JumpsPerformedProperty, false, false, false));
         list.Add(new ViewModelPropertyInfo(_CoinsCollectedProperty, false, false, false));
+        list.Add(new ViewModelPropertyInfo(_IsAliveProperty, false, false, false));
+        list.Add(new ViewModelPropertyInfo(_IsInvulnarableProperty, false, false, false));
+        list.Add(new ViewModelPropertyInfo(_LivesProperty, false, false, false));
         list.Add(new ViewModelPropertyInfo(_ShouldMoveLeftProperty, false, false, false, true));
         list.Add(new ViewModelPropertyInfo(_ShouldMoveRightProperty, false, false, false, true));
         list.Add(new ViewModelPropertyInfo(_ShouldStopProperty, false, false, false, true));
@@ -431,6 +506,7 @@ public partial class CharacterViewModel : CharacterViewModelBase {
     protected override void FillCommands(List<ViewModelCommandInfo> list) {
         base.FillCommands(list);;
         list.Add(new ViewModelCommandInfo("PickUpCoin", PickUpCoin) { ParameterType = typeof(void) });
+        list.Add(new ViewModelCommandInfo("Hit", Hit) { ParameterType = typeof(void) });
     }
 }
 

@@ -31,6 +31,18 @@ public abstract class CharacterViewBase : ViewBase {
     [UnityEngine.HideInInspector()]
     public Int32 _CoinsCollected;
     
+    [UFGroup("View Model Properties")]
+    [UnityEngine.HideInInspector()]
+    public Boolean _IsAlive;
+    
+    [UFGroup("View Model Properties")]
+    [UnityEngine.HideInInspector()]
+    public Boolean _IsInvulnarable;
+    
+    [UFGroup("View Model Properties")]
+    [UnityEngine.HideInInspector()]
+    public Int32 _Lives;
+    
     public override System.Type ViewModelType {
         get {
             return typeof(CharacterViewModel);
@@ -55,10 +67,17 @@ public abstract class CharacterViewBase : ViewBase {
         character.JumpLocked = this._JumpLocked;
         character.JumpsPerformed = this._JumpsPerformed;
         character.CoinsCollected = this._CoinsCollected;
+        character.IsAlive = this._IsAlive;
+        character.IsInvulnarable = this._IsInvulnarable;
+        character.Lives = this._Lives;
     }
     
     public virtual void ExecutePickUpCoin() {
         this.ExecuteCommand(Character.PickUpCoin);
+    }
+    
+    public virtual void ExecuteHit() {
+        this.ExecuteCommand(Character.Hit);
     }
 }
 
@@ -146,6 +165,16 @@ public class CharacterAvatarViewViewBase : CharacterViewBase {
     [UnityEngine.HideInInspector()]
     public bool _BindIsNotOnTheGround = true;
     
+    [UFToggleGroup("IsAlive")]
+    [UnityEngine.HideInInspector()]
+    [UFRequireInstanceMethod("IsAliveChanged")]
+    public bool _BindIsAlive = true;
+    
+    [UFToggleGroup("IsInvulnarable")]
+    [UnityEngine.HideInInspector()]
+    [UFRequireInstanceMethod("IsInvulnarableChanged")]
+    public bool _BindIsInvulnarable = true;
+    
     public override ViewModel CreateModel() {
         return this.RequestViewModel(GameManager.Container.Resolve<CharacterController>());
     }
@@ -196,6 +225,14 @@ public class CharacterAvatarViewViewBase : CharacterViewBase {
     
     /// Subscribes to the property and is notified anytime the value changes.
     public virtual void IsNotOnTheGroundChanged(Boolean value) {
+    }
+    
+    /// Subscribes to the property and is notified anytime the value changes.
+    public virtual void IsAliveChanged(Boolean value) {
+    }
+    
+    /// Subscribes to the property and is notified anytime the value changes.
+    public virtual void IsInvulnarableChanged(Boolean value) {
     }
     
     public virtual void ResetMovementIntention() {
@@ -250,6 +287,12 @@ public class CharacterAvatarViewViewBase : CharacterViewBase {
         }
         if (this._BindIsNotOnTheGround) {
             this.BindProperty(Character._IsNotOnTheGroundProperty, this.IsNotOnTheGroundChanged);
+        }
+        if (this._BindIsAlive) {
+            this.BindProperty(Character._IsAliveProperty, this.IsAliveChanged);
+        }
+        if (this._BindIsInvulnarable) {
+            this.BindProperty(Character._IsInvulnarableProperty, this.IsInvulnarableChanged);
         }
     }
 }

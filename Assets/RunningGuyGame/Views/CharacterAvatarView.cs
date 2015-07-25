@@ -8,6 +8,50 @@ using UniRx;
 
 public partial class CharacterAvatarView { 
 
+    /// Subscribes to the property and is notified anytime the value changes.
+    public override void IsAliveChanged(Boolean value)
+    {
+        var smoothFollow = Camera.main.GetComponent<SmoothFollow>();
+        var collidder = GetComponent<Collider2D>();
+
+        if (!value)
+        {
+            art.transform.eulerAngles = new Vector3(0, 0, 90);
+            collidder.enabled = false;
+            smoothFollow.target = null;
+        }
+        else
+        {
+            art.transform.eulerAngles = new Vector3(0, 0, 0);
+            collidder.enabled = true;
+            smoothFollow.target = transform.Find("CameraPoin");
+        }
+    }
+
+    /// Subscribes to the property and is notified anytime the value changes.
+    public override void IsInvulnarableChanged(Boolean value)
+    {
+        var sprites = GetComponentsInChildren<SpriteRenderer>().ToList();
+
+        if (value)
+        {
+            Observable.Interval(TimeSpan.FromMilliseconds(100))
+                .Subscribe(l =>
+                {
+                    if (Character.IsInvulnarable)
+                    {
+                        sprites.ForEach(s => s.enabled = l%2 == 0);
+                    }
+                })
+                .DisposeWhenChanged(Character.IsInvulnarableProperty);
+        }
+        else
+        {
+            sprites.ForEach(s => s.enabled = true);
+        }
+    }
+ 
+
     /// Subscribes to the state machine property and executes a method for each state.
     public override void JumpStateChanged(Invert.StateMachine.State value) {
         base.JumpStateChanged(value);
@@ -32,6 +76,8 @@ public partial class CharacterAvatarView {
             coinview.ExecutePickUp();
             ExecutePickUpCoin();
         });
+
+        this.BindComponentCollision2DWith<Spikes>(CollisionEventType.Enter, _=> ExecuteHit());
     }
 
     public override void OnInTheAir() {
