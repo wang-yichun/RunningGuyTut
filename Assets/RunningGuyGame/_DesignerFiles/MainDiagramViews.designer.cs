@@ -27,6 +27,10 @@ public abstract class CharacterViewBase : ViewBase {
     [UnityEngine.HideInInspector()]
     public Int32 _JumpsPerformed;
     
+    [UFGroup("View Model Properties")]
+    [UnityEngine.HideInInspector()]
+    public Int32 _CoinsCollected;
+    
     public override System.Type ViewModelType {
         get {
             return typeof(CharacterViewModel);
@@ -50,6 +54,73 @@ public abstract class CharacterViewBase : ViewBase {
         CharacterViewModel character = ((CharacterViewModel)(viewModel));
         character.JumpLocked = this._JumpLocked;
         character.JumpsPerformed = this._JumpsPerformed;
+        character.CoinsCollected = this._CoinsCollected;
+    }
+    
+    public virtual void ExecutePickUpCoin() {
+        this.ExecuteCommand(Character.PickUpCoin);
+    }
+}
+
+[DiagramInfoAttribute("RunningGuyGame")]
+public abstract class CoinViewBase : ViewBase {
+    
+    public override System.Type ViewModelType {
+        get {
+            return typeof(CoinViewModel);
+        }
+    }
+    
+    public CoinViewModel Coin {
+        get {
+            return ((CoinViewModel)(this.ViewModelObject));
+        }
+        set {
+            this.ViewModelObject = value;
+        }
+    }
+    
+    public override ViewModel CreateModel() {
+        return this.RequestViewModel(GameManager.Container.Resolve<CoinController>());
+    }
+    
+    protected override void InitializeViewModel(ViewModel viewModel) {
+    }
+    
+    public virtual void ExecutePickUp() {
+        this.ExecuteCommand(Coin.PickUp);
+    }
+}
+
+[DiagramInfoAttribute("RunningGuyGame")]
+public abstract class LevelRootViewBase : ViewBase {
+    
+    [UFGroup("View Model Properties")]
+    [UnityEngine.HideInInspector()]
+    public ViewBase _Player;
+    
+    public override System.Type ViewModelType {
+        get {
+            return typeof(LevelRootViewModel);
+        }
+    }
+    
+    public LevelRootViewModel LevelRoot {
+        get {
+            return ((LevelRootViewModel)(this.ViewModelObject));
+        }
+        set {
+            this.ViewModelObject = value;
+        }
+    }
+    
+    public override ViewModel CreateModel() {
+        return this.RequestViewModel(GameManager.Container.Resolve<LevelRootController>());
+    }
+    
+    protected override void InitializeViewModel(ViewModel viewModel) {
+        LevelRootViewModel levelRoot = ((LevelRootViewModel)(viewModel));
+        levelRoot.Player = this._Player == null ? null : this._Player.ViewModelObject as CharacterViewModel;
     }
 }
 
@@ -184,4 +255,71 @@ public class CharacterAvatarViewViewBase : CharacterViewBase {
 }
 
 public partial class CharacterAvatarView : CharacterAvatarViewViewBase {
+}
+
+public class LevelRootViewViewBase : LevelRootViewBase {
+    
+    [UFToggleGroup("Coins")]
+    [UnityEngine.HideInInspector()]
+    public bool _BindCoins = true;
+    
+    [UFGroup("Coins")]
+    [UnityEngine.HideInInspector()]
+    public bool _CoinsSceneFirst;
+    
+    [UFGroup("Coins")]
+    [UnityEngine.HideInInspector()]
+    public UnityEngine.Transform _CoinsContainer;
+    
+    [UFToggleGroup("Score")]
+    [UnityEngine.HideInInspector()]
+    public bool _BindScore = true;
+    
+    public override ViewModel CreateModel() {
+        return this.RequestViewModel(GameManager.Container.Resolve<LevelRootController>());
+    }
+    
+    /// This binding will add or remove views based on an element/viewmodel collection.
+    public virtual ViewBase CreateCoinsView(CoinViewModel item) {
+        return this.InstantiateView(item);
+    }
+    
+    /// This binding will add or remove views based on an element/viewmodel collection.
+    public virtual void CoinsAdded(ViewBase item) {
+    }
+    
+    /// This binding will add or remove views based on an element/viewmodel collection.
+    public virtual void CoinsRemoved(ViewBase item) {
+    }
+    
+    /// Subscribes to the property and is notified anytime the value changes.
+    public virtual void ScoreChanged(Int32 value) {
+    }
+    
+    public override void Bind() {
+        base.Bind();
+        if (this._BindCoins) {
+            this.BindToViewCollection( LevelRoot._CoinsProperty, viewModel=>{ return CreateCoinsView(viewModel as CoinViewModel); }, CoinsAdded, CoinsRemoved, _CoinsContainer, _CoinsSceneFirst);
+        }
+        if (this._BindScore) {
+            this.BindProperty(LevelRoot._ScoreProperty, this.ScoreChanged);
+        }
+    }
+}
+
+public partial class LevelRootView : LevelRootViewViewBase {
+}
+
+public class CoinViewViewBase : CoinViewBase {
+    
+    public override ViewModel CreateModel() {
+        return this.RequestViewModel(GameManager.Container.Resolve<CoinController>());
+    }
+    
+    public override void Bind() {
+        base.Bind();
+    }
+}
+
+public partial class CoinView : CoinViewViewBase {
 }

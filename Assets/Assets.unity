@@ -6978,6 +6978,9 @@ MonoBehaviour:
   _overrideViewModel: 0
   _resolveName: 
   _Save: 0
+  _JumpLocked: 0
+  _JumpsPerformed: 0
+  _CoinsCollected: 0
   _BindMovementState: 1
   _BindJumpState: 1
   _BindIsNotOnTheGround: 1

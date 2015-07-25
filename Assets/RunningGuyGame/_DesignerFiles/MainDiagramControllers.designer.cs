@@ -18,6 +18,7 @@ using UnityEngine;
 
 public abstract class CharacterControllerBase : Controller {
     
+    [Inject] public LevelRootController LevelRootController {get;set;}
     public abstract void InitializeCharacter(CharacterViewModel character);
     
     public override ViewModel CreateEmpty() {
@@ -30,5 +31,48 @@ public abstract class CharacterControllerBase : Controller {
     
     public override void Initialize(ViewModel viewModel) {
         this.InitializeCharacter(((CharacterViewModel)(viewModel)));
+    }
+    
+    public virtual void PickUpCoin(CharacterViewModel character) {
+    }
+}
+
+public abstract class CoinControllerBase : Controller {
+    
+    [Inject] public LevelRootController LevelRootController {get;set;}
+    public abstract void InitializeCoin(CoinViewModel coin);
+    
+    public override ViewModel CreateEmpty() {
+        return new CoinViewModel(this);
+    }
+    
+    public virtual CoinViewModel CreateCoin() {
+        return ((CoinViewModel)(this.Create()));
+    }
+    
+    public override void Initialize(ViewModel viewModel) {
+        this.InitializeCoin(((CoinViewModel)(viewModel)));
+    }
+    
+    public virtual void PickUp(CoinViewModel coin) {
+    }
+}
+
+public abstract class LevelRootControllerBase : Controller {
+    
+    [Inject] public CharacterController CharacterController {get;set;}
+    [Inject] public CoinController CoinController {get;set;}
+    public abstract void InitializeLevelRoot(LevelRootViewModel levelRoot);
+    
+    public override ViewModel CreateEmpty() {
+        return new LevelRootViewModel(this);
+    }
+    
+    public virtual LevelRootViewModel CreateLevelRoot() {
+        return ((LevelRootViewModel)(this.Create()));
+    }
+    
+    public override void Initialize(ViewModel viewModel) {
+        this.InitializeLevelRoot(((LevelRootViewModel)(viewModel)));
     }
 }

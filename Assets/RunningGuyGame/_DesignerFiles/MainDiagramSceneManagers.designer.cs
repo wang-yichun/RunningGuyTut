@@ -28,6 +28,10 @@ public class LevelSceneManagerBase : SceneManager {
     
     private CharacterController _CharacterController;
     
+    private CoinController _CoinController;
+    
+    private LevelRootController _LevelRootController;
+    
     public LevelSceneManagerSettings _LevelSceneManagerSettings = new LevelSceneManagerSettings();
     
     [Inject()]
@@ -43,6 +47,32 @@ public class LevelSceneManagerBase : SceneManager {
         }
     }
     
+    [Inject()]
+    public virtual CoinController CoinController {
+        get {
+            if ((this._CoinController == null)) {
+                this._CoinController = new CoinController() { Container = Container };
+            }
+            return this._CoinController;
+        }
+        set {
+            _CoinController = value;
+        }
+    }
+    
+    [Inject()]
+    public virtual LevelRootController LevelRootController {
+        get {
+            if ((this._LevelRootController == null)) {
+                this._LevelRootController = new LevelRootController() { Container = Container };
+            }
+            return this._LevelRootController;
+        }
+        set {
+            _LevelRootController = value;
+        }
+    }
+    
     // <summary>
     // This method is the first method to be invoked when the scene first loads. Anything registered here with 'Container' will effectively 
     // be injected on controllers, and instances defined on a subsystem.And example of this would be Container.RegisterInstance<IDataRepository>(new CodeRepository()). Then any property with 
@@ -51,6 +81,8 @@ public class LevelSceneManagerBase : SceneManager {
     public override void Setup() {
         base.Setup();
         Container.RegisterController<CharacterController>(CharacterController);
+        Container.RegisterController<CoinController>(CoinController);
+        Container.RegisterController<LevelRootController>(LevelRootController);
         this.Container.InjectAll();
     }
     

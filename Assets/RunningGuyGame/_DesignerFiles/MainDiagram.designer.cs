@@ -32,6 +32,8 @@ public class CharacterViewModelBase : ViewModel {
     
     public P<Int32> _JumpsPerformedProperty;
     
+    public P<Int32> _CoinsCollectedProperty;
+    
     public P<Boolean> _ShouldMoveLeftProperty;
     
     public P<Boolean> _ShouldMoveRightProperty;
@@ -41,6 +43,8 @@ public class CharacterViewModelBase : ViewModel {
     public P<Boolean> _ShouldJumpProperty;
     
     public P<Boolean> _IsNotOnTheGroundProperty;
+    
+    protected CommandWithSender<CharacterViewModel> _PickUpCoin;
     
     public CharacterViewModelBase(CharacterControllerBase controller, bool initialize = true) : 
             base(controller, initialize) {
@@ -59,6 +63,7 @@ public class CharacterViewModelBase : ViewModel {
         _IsOnTheGroundProperty = new P<Boolean>(this, "IsOnTheGround");
         _JumpLockedProperty = new P<Boolean>(this, "JumpLocked");
         _JumpsPerformedProperty = new P<Int32>(this, "JumpsPerformed");
+        _CoinsCollectedProperty = new P<Int32>(this, "CoinsCollected");
         _ShouldMoveLeftProperty = new P<Boolean>(this, "ShouldMoveLeft");
         _ShouldMoveRightProperty = new P<Boolean>(this, "ShouldMoveRight");
         _ShouldStopProperty = new P<Boolean>(this, "ShouldStop");
@@ -149,6 +154,8 @@ public class CharacterViewModelBase : ViewModel {
 }
 
 public partial class CharacterViewModel : CharacterViewModelBase {
+    
+    private LevelRootViewModel _ParentLevelRoot;
     
     public CharacterViewModel(CharacterControllerBase controller, bool initialize = true) : 
             base(controller, initialize) {
@@ -263,6 +270,21 @@ public partial class CharacterViewModel : CharacterViewModelBase {
         }
     }
     
+    public virtual P<Int32> CoinsCollectedProperty {
+        get {
+            return this._CoinsCollectedProperty;
+        }
+    }
+    
+    public virtual Int32 CoinsCollected {
+        get {
+            return _CoinsCollectedProperty.Value;
+        }
+        set {
+            _CoinsCollectedProperty.Value = value;
+        }
+    }
+    
     public virtual P<Boolean> ShouldMoveLeftProperty {
         get {
             return this._ShouldMoveLeftProperty;
@@ -338,8 +360,27 @@ public partial class CharacterViewModel : CharacterViewModelBase {
         }
     }
     
+    public virtual CommandWithSender<CharacterViewModel> PickUpCoin {
+        get {
+            return _PickUpCoin;
+        }
+        set {
+            _PickUpCoin = value;
+        }
+    }
+    
+    public virtual LevelRootViewModel ParentLevelRoot {
+        get {
+            return this._ParentLevelRoot;
+        }
+        set {
+            _ParentLevelRoot = value;
+        }
+    }
+    
     protected override void WireCommands(Controller controller) {
         var character = controller as CharacterControllerBase;
+        this.PickUpCoin = new CommandWithSender<CharacterViewModel>(this, character.PickUpCoin);
     }
     
     public override void Write(ISerializerStream stream) {
@@ -351,6 +392,7 @@ public partial class CharacterViewModel : CharacterViewModelBase {
         stream.SerializeBool("IsOnTheGround", this.IsOnTheGround);
         stream.SerializeBool("JumpLocked", this.JumpLocked);
         stream.SerializeInt("JumpsPerformed", this.JumpsPerformed);
+        stream.SerializeInt("CoinsCollected", this.CoinsCollected);
     }
     
     public override void Read(ISerializerStream stream) {
@@ -362,6 +404,7 @@ public partial class CharacterViewModel : CharacterViewModelBase {
         		this.IsOnTheGround = stream.DeserializeBool("IsOnTheGround");;
         		this.JumpLocked = stream.DeserializeBool("JumpLocked");;
         		this.JumpsPerformed = stream.DeserializeInt("JumpsPerformed");;
+        		this.CoinsCollected = stream.DeserializeInt("CoinsCollected");;
     }
     
     public override void Unbind() {
@@ -377,6 +420,7 @@ public partial class CharacterViewModel : CharacterViewModelBase {
         list.Add(new ViewModelPropertyInfo(_IsOnTheGroundProperty, false, false, false));
         list.Add(new ViewModelPropertyInfo(_JumpLockedProperty, false, false, false));
         list.Add(new ViewModelPropertyInfo(_JumpsPerformedProperty, false, false, false));
+        list.Add(new ViewModelPropertyInfo(_CoinsCollectedProperty, false, false, false));
         list.Add(new ViewModelPropertyInfo(_ShouldMoveLeftProperty, false, false, false, true));
         list.Add(new ViewModelPropertyInfo(_ShouldMoveRightProperty, false, false, false, true));
         list.Add(new ViewModelPropertyInfo(_ShouldStopProperty, false, false, false, true));
@@ -386,6 +430,218 @@ public partial class CharacterViewModel : CharacterViewModelBase {
     
     protected override void FillCommands(List<ViewModelCommandInfo> list) {
         base.FillCommands(list);;
+        list.Add(new ViewModelCommandInfo("PickUpCoin", PickUpCoin) { ParameterType = typeof(void) });
+    }
+}
+
+[DiagramInfoAttribute("RunningGuyGame")]
+public class CoinViewModelBase : ViewModel {
+    
+    protected CommandWithSender<CoinViewModel> _PickUp;
+    
+    public CoinViewModelBase(CoinControllerBase controller, bool initialize = true) : 
+            base(controller, initialize) {
+    }
+    
+    public CoinViewModelBase() : 
+            base() {
+    }
+    
+    public override void Bind() {
+        base.Bind();
+    }
+}
+
+public partial class CoinViewModel : CoinViewModelBase {
+    
+    private LevelRootViewModel _ParentLevelRoot;
+    
+    public CoinViewModel(CoinControllerBase controller, bool initialize = true) : 
+            base(controller, initialize) {
+    }
+    
+    public CoinViewModel() : 
+            base() {
+    }
+    
+    public virtual CommandWithSender<CoinViewModel> PickUp {
+        get {
+            return _PickUp;
+        }
+        set {
+            _PickUp = value;
+        }
+    }
+    
+    public virtual LevelRootViewModel ParentLevelRoot {
+        get {
+            return this._ParentLevelRoot;
+        }
+        set {
+            _ParentLevelRoot = value;
+        }
+    }
+    
+    protected override void WireCommands(Controller controller) {
+        var coin = controller as CoinControllerBase;
+        this.PickUp = new CommandWithSender<CoinViewModel>(this, coin.PickUp);
+    }
+    
+    public override void Write(ISerializerStream stream) {
+		base.Write(stream);
+    }
+    
+    public override void Read(ISerializerStream stream) {
+		base.Read(stream);
+    }
+    
+    public override void Unbind() {
+        base.Unbind();
+    }
+    
+    protected override void FillProperties(List<ViewModelPropertyInfo> list) {
+        base.FillProperties(list);;
+    }
+    
+    protected override void FillCommands(List<ViewModelCommandInfo> list) {
+        base.FillCommands(list);;
+        list.Add(new ViewModelCommandInfo("PickUp", PickUp) { ParameterType = typeof(void) });
+    }
+}
+
+[DiagramInfoAttribute("RunningGuyGame")]
+public class LevelRootViewModelBase : ViewModel {
+    
+    private IDisposable _ScoreDisposable;
+    
+    public P<CharacterViewModel> _PlayerProperty;
+    
+    public P<Int32> _ScoreProperty;
+    
+    public ModelCollection<CoinViewModel> _CoinsProperty;
+    
+    public LevelRootViewModelBase(LevelRootControllerBase controller, bool initialize = true) : 
+            base(controller, initialize) {
+    }
+    
+    public LevelRootViewModelBase() : 
+            base() {
+    }
+    
+    public override void Bind() {
+        base.Bind();
+        _PlayerProperty = new P<CharacterViewModel>(this, "Player");
+        _ScoreProperty = new P<Int32>(this, "Score");
+        _CoinsProperty = new ModelCollection<CoinViewModel>(this, "Coins");
+        _CoinsProperty.CollectionChanged += CoinsCollectionChanged;
+        this.ResetScore();
+        this.BindProperty(_PlayerProperty, p=> ResetScore());
+    }
+    
+    public virtual void ResetScore() {
+        if (_ScoreDisposable != null) _ScoreDisposable.Dispose();
+        _ScoreDisposable = _ScoreProperty.ToComputed( ComputeScore, this.GetScoreDependents().ToArray() ).DisposeWith(this);
+    }
+    
+    protected virtual void CoinsCollectionChanged(System.Collections.Specialized.NotifyCollectionChangedEventArgs args) {
+    }
+    
+    public virtual Int32 ComputeScore() {
+        return default(Int32);
+    }
+    
+    public virtual IEnumerable<IObservableProperty> GetScoreDependents() {
+        if (_PlayerProperty.Value != null) {
+            yield return _PlayerProperty.Value._CoinsCollectedProperty;
+        }
+        yield break;
+    }
+}
+
+public partial class LevelRootViewModel : LevelRootViewModelBase {
+    
+    public LevelRootViewModel(LevelRootControllerBase controller, bool initialize = true) : 
+            base(controller, initialize) {
+    }
+    
+    public LevelRootViewModel() : 
+            base() {
+    }
+    
+    public virtual P<CharacterViewModel> PlayerProperty {
+        get {
+            return this._PlayerProperty;
+        }
+    }
+    
+    public virtual CharacterViewModel Player {
+        get {
+            return _PlayerProperty.Value;
+        }
+        set {
+            _PlayerProperty.Value = value;
+            if (value != null) value.ParentLevelRoot = this;
+        }
+    }
+    
+    public virtual P<Int32> ScoreProperty {
+        get {
+            return this._ScoreProperty;
+        }
+    }
+    
+    public virtual Int32 Score {
+        get {
+            return _ScoreProperty.Value;
+        }
+        set {
+            _ScoreProperty.Value = value;
+        }
+    }
+    
+    public virtual ModelCollection<CoinViewModel> Coins {
+        get {
+            return this._CoinsProperty;
+        }
+    }
+    
+    protected override void WireCommands(Controller controller) {
+        var levelRoot = controller as LevelRootControllerBase;
+    }
+    
+    public override void Write(ISerializerStream stream) {
+		base.Write(stream);
+		if (stream.DeepSerialize) stream.SerializeObject("Player", this.Player);
+        if (stream.DeepSerialize) stream.SerializeArray("Coins", this.Coins);
+    }
+    
+    public override void Read(ISerializerStream stream) {
+		base.Read(stream);
+		if (stream.DeepSerialize) this.Player = stream.DeserializeObject<CharacterViewModel>("Player");
+if (stream.DeepSerialize) {
+        this.Coins.Clear();
+        this.Coins.AddRange(stream.DeserializeObjectArray<CoinViewModel>("Coins"));
+}
+    }
+    
+    public override void Unbind() {
+        base.Unbind();
+        _CoinsProperty.CollectionChanged -= CoinsCollectionChanged;
+    }
+    
+    protected override void FillProperties(List<ViewModelPropertyInfo> list) {
+        base.FillProperties(list);;
+        list.Add(new ViewModelPropertyInfo(_PlayerProperty, true, false, false));
+        list.Add(new ViewModelPropertyInfo(_ScoreProperty, false, false, false, true));
+        list.Add(new ViewModelPropertyInfo(_CoinsProperty, true, true, false));
+    }
+    
+    protected override void FillCommands(List<ViewModelCommandInfo> list) {
+        base.FillCommands(list);;
+    }
+    
+    protected override void CoinsCollectionChanged(System.Collections.Specialized.NotifyCollectionChangedEventArgs args) {
+        foreach (var item in args.NewItems.OfType<CoinViewModel>()) item.ParentLevelRoot = this;;
     }
 }
 
