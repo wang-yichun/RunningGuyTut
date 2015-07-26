@@ -161,6 +161,10 @@ public abstract class LevelRootViewBase : ViewBase {
 
 public class CharacterAvatarViewViewBase : CharacterViewBase {
     
+    [UnityEngine.SerializeField()]
+    [UnityEngine.HideInInspector()]
+    private CharacterSounds _CharacterSounds;
+    
     private IDisposable _MovementIntentionDisposable;
     
     private IDisposable _JumpIntentionDisposable;
@@ -190,6 +194,15 @@ public class CharacterAvatarViewViewBase : CharacterViewBase {
     [UnityEngine.HideInInspector()]
     [UFRequireInstanceMethod("IsInvulnarableChanged")]
     public bool _BindIsInvulnarable = true;
+    
+    public virtual CharacterSounds CharacterSounds {
+        get {
+            return _CharacterSounds ?? (_CharacterSounds = this.gameObject.EnsureComponent<CharacterSounds>());
+        }
+        set {
+            this._CharacterSounds = value;
+        }
+    }
     
     public override ViewModel CreateModel() {
         return this.RequestViewModel(GameManager.Container.Resolve<CharacterController>());
@@ -411,4 +424,25 @@ public class CoinViewViewBase : CoinViewBase {
 }
 
 public partial class CoinView : CoinViewViewBase {
+}
+
+public partial class CharacterSounds : ViewComponent {
+    
+    public virtual CharacterViewModel Character {
+        get {
+            return ((CharacterViewModel)(this.View.ViewModelObject));
+        }
+    }
+    
+    public virtual void ExecutePickUpCoin() {
+        this.View.ExecuteCommand(Character.PickUpCoin);
+    }
+    
+    public virtual void ExecuteHit() {
+        this.View.ExecuteCommand(Character.Hit);
+    }
+    
+    public virtual void ExecuteFinishReached() {
+        this.View.ExecuteCommand(Character.FinishReached);
+    }
 }

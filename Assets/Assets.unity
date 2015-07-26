@@ -6670,6 +6670,9 @@ MonoBehaviour:
   _BindScore: 1
   _BindGameFlowState: 1
   scoreText: {fileID: 508318961}
+  gameoverScreen: {fileID: 1614999473}
+  gameoverScreenText: {fileID: 855170931}
+  playAgainButton: {fileID: 1291186758}
 --- !u!1 &1148991346
 GameObject:
   m_ObjectHideFlags: 0
@@ -7174,6 +7177,7 @@ GameObject:
   - 61: {fileID: 1234257531}
   - 82: {fileID: 1234257536}
   - 114: {fileID: 1234257530}
+  - 114: {fileID: 1234257533}
   m_Layer: 8
   m_Name: Character
   m_TagString: Untagged
@@ -7218,6 +7222,7 @@ MonoBehaviour:
   _IsAlive: 1
   _IsInvulnarable: 0
   _Lives: 3
+  _CharacterSounds: {fileID: 0}
   _BindMovementState: 1
   _BindJumpState: 1
   _BindIsNotOnTheGround: 1
@@ -7251,6 +7256,22 @@ Rigidbody2D:
   m_Interpolate: 2
   m_SleepingMode: 1
   m_CollisionDetection: 1
+--- !u!114 &1234257533
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1234257528}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cd6164e3df9f42046b906abd17ade615, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _view: {fileID: 0}
+  JumpSound: {fileID: 8300000, guid: 4f8888f50e6f4a445b69b1b706d614db, type: 3}
+  FootstepSound: {fileID: 8300000, guid: 2d200b27d942c7349894a6405dda1ebd, type: 3}
+  LandedSound: {fileID: 8300000, guid: ce15fa61e1f20114abd0700211ee0579, type: 3}
+  CoinSound: {fileID: 8300000, guid: a8105bed4f22f4248b1f1ce02dc215b9, type: 3}
 --- !u!82 &1234257536
 AudioSource:
   m_ObjectHideFlags: 0
